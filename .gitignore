@@ -1,0 +1,10 @@
+.venv/
+.env
+__pycache__/
+*.py[cod]
+.DS_Store
+.idea/
+
+# Local/generated ChromaDB data
+chroma_db/
+sync_state.json

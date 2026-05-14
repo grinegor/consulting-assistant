@@ -1,0 +1,10 @@
+cat > requirements.txt << "EOF"
+crewai
+chromadb
+notion-client
+python-telegram-bot
+feedparser
+openai
+httpx
+python-dotenv
+EOF
