@@ -5,6 +5,9 @@ import time
 import json
 from datetime import datetime
 from chromadb.utils import embedding_functions
+from dotenv import load_dotenv
+
+load_dotenv()
 
 NOTION_API_KEY = os.getenv("NOTION_API_KEY")
 DATABASE_ID = "3538cd80a7f480aab786c93e0c370bf5"
@@ -81,6 +84,31 @@ def save_state(state):
     with open(STATE_FILE, 'w') as f:
         json.dump(state, f, indent=2)
 
+
+def page_to_chroma_payload(page):
+    props = page.get("properties", {})
+    title = safe_get_text(props.get("Name")) or safe_get_text(props.get("Название"))
+    if not title:
+        return None
+
+    doc_text = f"""
+Название: {title}
+Категория: {safe_get_select(props.get("Category"))}
+Use Case: {safe_get_text(props.get("Use Case"))}
+Описание: {safe_get_text(props.get("Summary"))}
+Реализация: {safe_get_text(props.get("Implementation"))}
+Плюсы: {safe_get_text(props.get("Pros"))}
+Минусы: {safe_get_text(props.get("Cons"))}
+Инструменты: {', '.join(safe_get_multi_select(props.get("Tools")))}
+Источник: {safe_get_url(props.get("Source"))}
+"""
+    metadata = {
+        "title": title,
+        "category": safe_get_select(props.get("Category")),
+        "notion_id": page["id"]
+    }
+    return page["id"], doc_text, metadata
+
 def sync():
     print("🔄 Синхронизация Notion -> ChromaDB...")
     state = load_state()
@@ -117,33 +145,17 @@ def sync():
     )
 
     for page in updated_pages:
-        props = page.get("properties", {})
-        title = safe_get_text(props.get("Name")) or safe_get_text(props.get("Название"))
-        if not title:
+        payload = page_to_chroma_payload(page)
+        if not payload:
             continue
+        page_id, doc_text, metadata = payload
 
-        doc_text = f"""
-Название: {title}
-Категория: {safe_get_select(props.get("Category"))}
-Use Case: {safe_get_text(props.get("Use Case"))}
-Описание: {safe_get_text(props.get("Summary"))}
-Реализация: {safe_get_text(props.get("Implementation"))}
-Плюсы: {safe_get_text(props.get("Pros"))}
-Минусы: {safe_get_text(props.get("Cons"))}
-Инструменты: {', '.join(safe_get_multi_select(props.get("Tools")))}
-Источник: {safe_get_url(props.get("Source"))}
-"""
-        metadata = {
-            "title": title,
-            "category": safe_get_select(props.get("Category")),
-            "notion_id": page["id"]
-        }
         collection.upsert(
-            ids=[page["id"]],
+            ids=[page_id],
             documents=[doc_text],
             metadatas=[metadata]
         )
-        print(f"  ✅ Обновлён: {title}")
+        print(f"  ✅ Обновлён: {metadata['title']}")
 
     state["last_sync"] = int(time.time())
     save_state(state)

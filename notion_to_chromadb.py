@@ -1,33 +1,27 @@
-import requests
-import chromadb
-from chromadb.utils import embedding_functions
 import os
+
+import chromadb
 import httpx
-from openai import OpenAI
+import requests
+from chromadb.utils import embedding_functions
 from dotenv import load_dotenv
+from openai import OpenAI
 
 load_dotenv()
 
 NOTION_API_KEY = os.getenv("NOTION_API_KEY")
 DATABASE_ID = "3538cd80a7f480aab786c93e0c370bf5"
-PROXY_URL = os.getenv("PROXY_URL")  # должен быть в .env
-
-# ---- Настройка OpenAI клиента с прокси ----
-http_client = httpx.Client(proxy=PROXY_URL)
-openai_client = OpenAI(
-    api_key=os.getenv("OPENAI_API_KEY"),
-    http_client=http_client
-)
+PROXY_URL = os.getenv("PROXY_URL")
+CHROMA_PATH = "./chroma_db"
+COLLECTION_NAME = "business_cases"
 
 
-# ---- Кастомная embedding функция с прокси ----
 class ProxyOpenAIEmbeddingFunction(embedding_functions.EmbeddingFunction):
     def __init__(self, client, model_name):
         self._client = client
         self._model_name = model_name
 
     def __call__(self, input):
-        # ChromaDB может передать как строку, так и список строк
         if isinstance(input, str):
             input = [input]
         response = self._client.embeddings.create(
@@ -37,25 +31,14 @@ class ProxyOpenAIEmbeddingFunction(embedding_functions.EmbeddingFunction):
         return [data.embedding for data in response.data]
 
 
-# Создаём экземпляр embedding функции
-embed_fn = ProxyOpenAIEmbeddingFunction(openai_client, "text-embedding-3-small")
-
-# ---- Подготовка ChromaDB ----
-chroma_client = chromadb.PersistentClient(path="./chroma_db")
-try:
-    chroma_client.delete_collection("business_cases")
-    print("🗑️ Старая коллекция удалена")
-except:
-    pass
-
-collection = chroma_client.create_collection(
-    name="business_cases",
-    embedding_function=embed_fn  # ← используем кастомную функцию
-)
-print("✅ Коллекция создана с эмбеддингами text-embedding-3-small (через прокси)")
+def create_openai_client():
+    http_client = httpx.Client(proxy=PROXY_URL) if PROXY_URL else None
+    return OpenAI(
+        api_key=os.getenv("OPENAI_API_KEY"),
+        http_client=http_client
+    )
 
 
-# ---- Получение кейсов из Notion (без изменений) ----
 def safe_get_text(prop, default=""):
     if not prop:
         return default
@@ -153,7 +136,7 @@ def fetch_notion_cases():
         title = safe_get_text(props.get(field_mapping.get("Name"))) if field_mapping.get("Name") else ""
         if not title:
             continue
-        case = {
+        cases.append({
             "id": page["id"],
             "title": title,
             "category": safe_get_select(props.get(field_mapping.get("Category"))),
@@ -165,25 +148,17 @@ def fetch_notion_cases():
             "tools": safe_get_multi_select(props.get(field_mapping.get("Tools"))),
             "source": safe_get_url(props.get(field_mapping.get("Source"))),
             "date": safe_get_date(props.get(field_mapping.get("Date")))
-        }
-        cases.append(case)
+        })
     return cases
 
 
-# ---- Загрузка в ChromaDB ----
-cases = fetch_notion_cases()
-print(f"📥 Найдено {len(cases)} кейсов в Notion")
+def build_chroma_payload(cases):
+    documents = []
+    metadatas = []
+    ids = []
 
-if not cases:
-    print("⚠️ Нет кейсов для загрузки. Убедитесь, что в базе есть страницы с заполненным полем 'Name' или 'Название'.")
-    exit()
-
-documents = []
-metadatas = []
-ids = []
-
-for case in cases:
-    doc_text = f"""
+    for case in cases:
+        doc_text = f"""
 Название: {case['title']}
 Категория: {case['category']}
 Use Case: {case['use_case']}
@@ -194,19 +169,52 @@ Use Case: {case['use_case']}
 Инструменты: {', '.join(case['tools'])}
 Источник: {case['source']}
 """
-    documents.append(doc_text)
-    metadatas.append({
-        "title": case['title'],
-        "category": case['category'],
-        "notion_id": case['id']
-    })
-    ids.append(case['id'])
+        documents.append(doc_text)
+        metadatas.append({
+            "title": case['title'],
+            "category": case['category'],
+            "notion_id": case['id']
+        })
+        ids.append(case['id'])
 
-collection.add(
-    documents=documents,
-    metadatas=metadatas,
-    ids=ids
-)
+    return documents, metadatas, ids
 
-print(f"✅ Загружено {len(documents)} документов в ChromaDB")
-print("\n🎉 Готово! Теперь RAG может искать по этим кейсам.")
+
+def rebuild_chroma_from_notion():
+    openai_client = create_openai_client()
+    embed_fn = ProxyOpenAIEmbeddingFunction(openai_client, "text-embedding-3-small")
+
+    chroma_client = chromadb.PersistentClient(path=CHROMA_PATH)
+    try:
+        chroma_client.delete_collection(COLLECTION_NAME)
+        print("🗑️ Старая коллекция удалена")
+    except Exception:
+        pass
+
+    collection = chroma_client.create_collection(
+        name=COLLECTION_NAME,
+        embedding_function=embed_fn
+    )
+    print("✅ Коллекция создана с эмбеддингами text-embedding-3-small (через прокси)")
+
+    cases = fetch_notion_cases()
+    print(f"📥 Найдено {len(cases)} кейсов в Notion")
+
+    if not cases:
+        print("⚠️ Нет кейсов для загрузки. Убедитесь, что в базе есть страницы с заполненным полем 'Name' или 'Название'.")
+        return 0
+
+    documents, metadatas, ids = build_chroma_payload(cases)
+    collection.add(
+        documents=documents,
+        metadatas=metadatas,
+        ids=ids
+    )
+
+    print(f"✅ Загружено {len(documents)} документов в ChromaDB")
+    print("\n🎉 Готово! Теперь RAG может искать по этим кейсам.")
+    return len(documents)
+
+
+if __name__ == "__main__":
+    rebuild_chroma_from_notion()

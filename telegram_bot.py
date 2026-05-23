@@ -23,9 +23,65 @@ TELEGRAM_TOKEN = os.getenv("TELEGRAMBOT_API_KEY")
 
 # Категории для кейсов
 CATEGORIES = ["Marketing", "Support", "Automation", "Agents", "Analytics"]
+TELEGRAM_MESSAGE_LIMIT = 4096
 
 # Состояние для создания кейса (одно состояние)
 ASK_CASE_BLOCK = 1
+
+
+class CaseValidationError(ValueError):
+    pass
+
+
+def parse_case_text(text: str) -> dict:
+    lines = text.strip().split('\n')
+    if len(lines) < 10:
+        raise CaseValidationError("❌ Недостаточно строк. Нужно 10 строк. Отправьте ещё раз или /cancel.")
+
+    title = lines[0].strip()
+    category = lines[1].strip()
+    use_case = lines[2].strip()
+    tools = lines[3].strip()
+    summary = lines[4].strip()
+    implementation = lines[5].strip()
+    pros = lines[6].strip()
+    cons = lines[7].strip()
+    source = lines[8].strip()
+    date_str = lines[9].strip()
+
+    if not title or category not in CATEGORIES:
+        raise CaseValidationError(f"❌ Категория должна быть: {', '.join(CATEGORIES)}")
+
+    try:
+        date_obj = datetime.strptime(date_str, "%d.%m.%Y")
+    except ValueError as exc:
+        raise CaseValidationError("❌ Неверный формат даты. Используйте ДД.ММ.ГГГГ") from exc
+
+    return {
+        "title": title,
+        "category": category,
+        "use_case": use_case,
+        "summary": summary,
+        "implementation": implementation,
+        "pros": pros,
+        "cons": cons,
+        "tools": tools,
+        "source": source,
+        "date": date_obj.strftime("%Y-%m-%d")
+    }
+
+
+def split_telegram_message(text: str, limit: int = TELEGRAM_MESSAGE_LIMIT) -> list[str]:
+    if limit <= 0:
+        raise ValueError("limit must be positive")
+    if not text:
+        return [""]
+    return [text[i:i + limit] for i in range(0, len(text), limit)]
+
+
+async def reply_text_chunked(message, text: str, **kwargs):
+    for chunk in split_telegram_message(text):
+        await message.reply_text(chunk, **kwargs)
 
 # ---------- Постоянная reply-клавиатура (левая группа кнопок) ----------
 def get_reply_keyboard():
@@ -162,47 +218,11 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     mode = context.user_data.get("mode")
 
     if context.user_data.get("awaiting_case"):
-        text = update.message.text.strip()
-        lines = text.split('\n')
-        if len(lines) < 10:
-            await update.message.reply_text("❌ Недостаточно строк. Нужно 10 строк. Отправьте ещё раз или /cancel.")
-            return
-
-        title = lines[0].strip()
-        category = lines[1].strip()
-        use_case = lines[2].strip()
-        tools = lines[3].strip()
-        summary = lines[4].strip()
-        implementation = lines[5].strip()
-        pros = lines[6].strip()
-        cons = lines[7].strip()
-        source = lines[8].strip()
-        date_str = lines[9].strip()
-
-        if not title or category not in CATEGORIES:
-            await update.message.reply_text(f"❌ Категория должна быть: {', '.join(CATEGORIES)}")
-            return
-
         try:
-            from datetime import datetime
-            date_obj = datetime.strptime(date_str, "%d.%m.%Y")
-            date_iso = date_obj.strftime("%Y-%m-%d")
-        except:
-            await update.message.reply_text("❌ Неверный формат даты. Используйте ДД.ММ.ГГГГ")
+            case_data = parse_case_text(update.message.text)
+        except CaseValidationError as e:
+            await update.message.reply_text(str(e))
             return
-
-        case_data = {
-            "title": title,
-            "category": category,
-            "use_case": use_case,
-            "summary": summary,
-            "implementation": implementation,
-            "pros": pros,
-            "cons": cons,
-            "tools": tools,
-            "source": source,
-            "date": date_iso
-        }
 
         from scribe import ScribeAgent
         scribe = ScribeAgent()
@@ -301,11 +321,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             else:
                 response = await asyncio.to_thread(orchestrate, user_id, user_text, "auto")
 
-            if len(response) > 4096:
-                for i in range(0, len(response), 4096):
-                    await update.message.reply_text(response[i:i+4096], parse_mode="Markdown")
-            else:
-                await update.message.reply_text(response, parse_mode="Markdown")
+            await reply_text_chunked(update.message, response, parse_mode="Markdown")
         except Exception as e:
             await update.message.reply_text(f"❌ Ошибка при обработке голосового: {e}")
         return
@@ -360,11 +376,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         else:
             response = await asyncio.to_thread(orchestrate, user_id, user_message, "auto")
 
-        if len(response) > 4096:
-            for i in range(0, len(response), 4096):
-                await update.message.reply_text(response[i:i+4096], parse_mode="Markdown")
-        else:
-            await update.message.reply_text(response, parse_mode="Markdown")
+        await reply_text_chunked(update.message, response, parse_mode="Markdown")
     except Exception as e:
         await update.message.reply_text(f"❌ Ошибка: {e}")
 

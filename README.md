@@ -1,35 +1,35 @@
 # Consulting Assistant
 
-AI-powered Telegram consulting assistant for business use cases around AI adoption. The bot can chat with users, run a multi-agent business consultation flow, save new business cases to Notion, and search saved cases through a local ChromaDB RAG knowledge base.
+AI-консультант в формате Telegram-бота для бизнес-задач, связанных с внедрением искусственного интеллекта. Бот умеет вести обычный чат, запускать многоагентный сценарий бизнес-консультации, сохранять новые бизнес-кейсы в Notion и искать сохраненные кейсы через локальную RAG-базу знаний на ChromaDB.
 
-## What It Does
+## Что Умеет Проект
 
-- Provides a Telegram bot interface with chat, business consultation, help, and case-saving modes.
-- Uses a CrewAI-based workflow with researcher, consultant, and critic agents for business consultation questions.
-- Searches AI business cases stored in ChromaDB through `rag_tool.py`.
-- Stores conversation memory in ChromaDB through `memory.py`.
-- Saves structured business cases to Notion through `Scribe.py`.
-- Syncs Notion business cases into ChromaDB through the Notion-to-Chroma scripts.
+- Предоставляет Telegram-интерфейс с режимами чата, бизнес-консультации, помощи и сохранения кейсов.
+- Использует CrewAI-сценарий с агентами исследователя, консультанта и критика для вопросов по бизнес-консалтингу.
+- Ищет AI-бизнес-кейсы, сохраненные в ChromaDB, через `rag_tool.py`.
+- Хранит память диалогов в ChromaDB через `memory.py`.
+- Сохраняет структурированные бизнес-кейсы в Notion через `scribe.py`.
+- Синхронизирует бизнес-кейсы из Notion в ChromaDB через Notion-to-Chroma скрипты.
 
-## Main Files
+## Основные Файлы
 
-- `telegram_bot.py` - Telegram bot entry point, menus, commands, and message handling.
-- `orchestrator.py` - Routes messages between simple chat and business consultation mode.
-- `agents.py` - Agent-related setup and helpers.
-- `rag_tool.py` - ChromaDB search tool for business cases.
-- `memory.py` - Conversation memory storage and retrieval.
-- `Scribe.py` - Creates new business case pages in Notion.
-- `notion_to_chromadb.py` - Full rebuild from Notion into ChromaDB.
-- `sync_notion_to_chromadb.py` - Incremental Notion-to-ChromaDB synchronization.
-- `digest.py` - Digest-related logic.
-- `main.py` - Minimal environment-loading starter file.
-- `requirements.txt` - Python dependencies.
+- `telegram_bot.py` - точка входа Telegram-бота, меню, команды и обработка сообщений.
+- `orchestrator.py` - маршрутизация сообщений между обычным чатом и режимом бизнес-консультации.
+- `agents.py` - настройка агентов и вспомогательная логика.
+- `rag_tool.py` - инструмент поиска бизнес-кейсов в ChromaDB.
+- `memory.py` - сохранение и поиск памяти диалогов.
+- `scribe.py` - создание новых страниц с бизнес-кейсами в Notion.
+- `notion_to_chromadb.py` - полная пересборка базы ChromaDB из Notion.
+- `sync_notion_to_chromadb.py` - инкрементальная синхронизация Notion -> ChromaDB.
+- `digest.py` - логика генерации дайджеста.
+- `main.py` - минимальный стартовый файл с загрузкой переменных окружения.
+- `requirements.txt` - зависимости Python.
 
-## Environment Variables
+## Переменные Окружения
 
-Create a local `.env` file in the project root. Do not commit it.
+Создайте локальный файл `.env` в корне проекта. Не коммитьте его в Git.
 
-Required variables:
+Обязательные переменные:
 
 ```env
 OPENAI_API_KEY=your_openai_key
@@ -38,7 +38,7 @@ NOTION_API_KEY=your_notion_integration_secret
 PROXY_URL=optional_proxy_url
 ```
 
-## Setup
+## Установка
 
 ```bash
 python -m venv .venv
@@ -46,28 +46,58 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## Run The Bot
+## Запуск Бота
 
 ```bash
 python telegram_bot.py
 ```
 
-## Sync Notion Cases To ChromaDB
+## Синхронизация Кейсов Из Notion В ChromaDB
 
-For a full rebuild of the `business_cases` collection:
+Полная пересборка коллекции `business_cases`:
 
 ```bash
 python notion_to_chromadb.py
 ```
 
-For incremental sync based on updated Notion pages:
+Инкрементальная синхронизация обновленных страниц Notion:
 
 ```bash
 python sync_notion_to_chromadb.py
 ```
 
-## Notes
+## Тестирование
 
-- `.env`, `.venv`, `.idea`, and local `chroma_db` files are intentionally ignored by Git.
-- The local ChromaDB database is generated runtime data and should be recreated or synced locally.
-- Keep API keys and bot tokens only in `.env` or your deployment environment.
+В проекте есть автоматические тесты для основной логики бота, синхронизации Notion/ChromaDB, форматирования RAG-ответов, создания Notion payload через Scribe и eval-проверок маршрутизации. Внешние сервисы, включая Telegram, Notion, OpenAI, ChromaDB и CrewAI, замоканы в тестах, поэтому suite запускается без реальных API-вызовов и секретов.
+
+Запустить все тесты:
+
+```bash
+python -m pytest -q
+```
+
+Запустить только легкие eval-проверки маршрутизации:
+
+```bash
+python -m pytest -q -m eval
+```
+
+Запустить только локальные stress/boundary проверки:
+
+```bash
+python -m pytest -q -m stress
+```
+
+Проверить компиляцию Python-файлов проекта:
+
+```bash
+python -m compileall -q telegram_bot.py scribe.py agents.py digest.py main.py memory.py notion_to_chromadb.py orchestrator.py rag_tool.py sync_notion_to_chromadb.py tests
+```
+
+GitHub Actions автоматически запускает тесты и compile-check при push и pull request в ветку `main`.
+
+## Заметки
+
+- `.env`, `.venv`, `.idea` и локальные файлы `chroma_db` намеренно игнорируются Git.
+- Локальная база ChromaDB является runtime-данными и должна пересоздаваться или синхронизироваться локально.
+- API-ключи и токены бота нужно хранить только в `.env` или в переменных окружения deployment-среды.
