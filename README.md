@@ -118,26 +118,6 @@ The voice path is kept inside `telegram_bot.py`, while pure helper logic is test
 - Docker and Docker Compose
 - GitHub Actions CI
 
-## Demo
-
-The repository includes mock demo screenshots based on the implemented Telegram bot flows. They are not live Telegram screenshots and do not use real tokens.
-
-> UI flow mock based on implemented bot flows.
-
-| Main menu | Consultation mode |
-|---|---|
-| ![Main menu mock](docs/assets/main_menu.png) | ![Consultation mock](docs/assets/business_consultation.png) |
-
-| RAG result | Save case | Voice transcription |
-|---|---|---|
-| ![RAG result mock](docs/assets/rag_result.png) | ![Notion save mock](docs/assets/notion_save_case.png) | ![Voice flow mock](docs/assets/voice_transcription.png) |
-
-Optional flow GIF:
-
-![Mock flow GIF](docs/assets/demo_flow.gif)
-
-Demo prompts are listed in [docs/demo_queries.md](docs/demo_queries.md).
-
 ## Setup
 
 Clone the repository and create a virtual environment:
