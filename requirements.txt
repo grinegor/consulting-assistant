@@ -6,7 +6,3 @@ feedparser
 openai
 httpx
 python-dotenv
-
-# Test/development dependencies
-pytest
-pytest-asyncio

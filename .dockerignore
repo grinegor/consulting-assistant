@@ -1,0 +1,14 @@
+.git
+.github
+.venv
+.env
+.env.*
+!.env.example
+.idea
+.pytest_cache
+__pycache__
+*.py[cod]
+.DS_Store
+chroma_db
+sync_state.json
+docs/assets/*.gif

@@ -2,6 +2,8 @@ import importlib
 import sys
 import types
 
+import pytest
+
 
 def import_scribe(monkeypatch):
     fake_crewai = types.ModuleType("crewai")
@@ -32,6 +34,7 @@ def test_notion_create_case_tool_builds_expected_properties(monkeypatch):
         pages = FakePages()
 
     monkeypatch.setenv("NOTION_API_KEY", "notion-token")
+    monkeypatch.setenv("NOTION_DATABASE_ID", "test-database-id")
     monkeypatch.setattr(scribe, "Client", lambda auth: FakeClient())
 
     tool = scribe.NotionCreateCaseTool()
@@ -50,7 +53,7 @@ def test_notion_create_case_tool_builds_expected_properties(monkeypatch):
 
     props = created["properties"]
     assert "успешно создан" in result
-    assert created["parent"] == {"database_id": "3538cd80a7f480aab786c93e0c370bf5"}
+    assert created["parent"] == {"database_id": "test-database-id"}
     assert props["Name"]["title"][0]["text"]["content"] == "Support Bot"
     assert props["Category"]["select"]["name"] == "Support"
     assert props["Tools"]["multi_select"] == [
@@ -58,6 +61,20 @@ def test_notion_create_case_tool_builds_expected_properties(monkeypatch):
         {"name": "ChromaDB"},
         {"name": "Telegram"},
     ]
+
+
+def test_build_notion_case_properties_filters_empty_tools(monkeypatch):
+    scribe = import_scribe(monkeypatch)
+
+    props = scribe.build_notion_case_properties({
+        "title": "Case",
+        "category": "Automation",
+        "tools": "OpenAI, , ChromaDB",
+    })
+
+    assert props["Name"]["title"][0]["text"]["content"] == "Case"
+    assert props["Category"]["select"]["name"] == "Automation"
+    assert props["Tools"]["multi_select"] == [{"name": "OpenAI"}, {"name": "ChromaDB"}]
 
 
 def test_notion_create_case_tool_returns_error_on_notion_failure(monkeypatch):
@@ -71,6 +88,7 @@ def test_notion_create_case_tool_returns_error_on_notion_failure(monkeypatch):
         pages = FakePages()
 
     monkeypatch.setattr(scribe, "Client", lambda auth: FakeClient())
+    monkeypatch.setenv("NOTION_DATABASE_ID", "test-database-id")
 
     tool = scribe.NotionCreateCaseTool()
 
@@ -89,3 +107,11 @@ def test_scribe_agent_delegates_to_tool(monkeypatch):
     agent = scribe.ScribeAgent()
 
     assert agent.create_case({"title": "Case"}) == "created Case"
+
+
+def test_notion_create_case_tool_requires_database_id(monkeypatch):
+    scribe = import_scribe(monkeypatch)
+    monkeypatch.delenv("NOTION_DATABASE_ID", raising=False)
+
+    with pytest.raises(ValueError, match="NOTION_DATABASE_ID is required"):
+        scribe.NotionCreateCaseTool()
