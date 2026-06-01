@@ -4,7 +4,6 @@ from openai import OpenAI
 from crewai import Agent, Task, Crew
 from rag_tool import ChromaRAGTool
 from memory import add_to_memory, retrieve_memory
-from scribe import ScribeAgent
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -94,8 +93,6 @@ critic = Agent(
     reasoning_effort="medium",
     verbose=False
 )
-
-scribe = ScribeAgent()
 
 def run_business_crew(query: str) -> str:
     task_research = Task(

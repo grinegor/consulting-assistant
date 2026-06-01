@@ -28,7 +28,7 @@ def test_safe_getters_handle_empty_values():
     assert sync_module.safe_get_text({"rich_text": [{"text": {"content": "Body"}}]}) == "Body"
     assert sync_module.safe_get_select({"select": {"name": "Support"}}) == "Support"
     assert sync_module.safe_get_select({"select": None}) == ""
-    assert sync_module.safe_get_multi_select({"multi_select": [{"name": "A"}, {"bad": "ignored"}]}) == ["A", ""]
+    assert sync_module.safe_get_multi_select({"multi_select": [{"name": "A"}, {"bad": "ignored"}]}) == ["A"]
     assert sync_module.safe_get_multi_select({"multi_select": "not-a-list"}) == []
     assert sync_module.safe_get_url({"url": "https://example.com"}) == "https://example.com"
     assert sync_module.safe_get_date({"date": {"start": "2026-05-23"}}) == "2026-05-23"

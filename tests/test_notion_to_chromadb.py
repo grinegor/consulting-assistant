@@ -51,6 +51,7 @@ def test_build_chroma_payload_formats_documents_and_metadata():
 
 
 def test_fetch_notion_cases_paginates_and_maps_ru_fields(monkeypatch):
+    monkeypatch.setenv("NOTION_DATABASE_ID", "test-database-id")
     responses = [
         {
             "results": [

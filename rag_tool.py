@@ -6,6 +6,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+CHROMA_PATH = os.getenv("CHROMA_PATH", "./chroma_db")
+BUSINESS_CASES_COLLECTION = os.getenv("BUSINESS_CASES_COLLECTION", "business_cases")
+
 
 class ChromaRAGTool(BaseTool):
     name: str = "Business Cases Search"
@@ -24,13 +27,13 @@ class ChromaRAGTool(BaseTool):
 
     def _ensure_initialized(self):
         if self._client is None:
-            object.__setattr__(self, '_client', chromadb.PersistentClient(path="./chroma_db"))
+            object.__setattr__(self, '_client', chromadb.PersistentClient(path=CHROMA_PATH))
             object.__setattr__(self, '_openai_ef', embedding_functions.OpenAIEmbeddingFunction(
                 api_key=os.getenv("OPENAI_API_KEY"),
                 model_name="text-embedding-3-small"
             ))
             object.__setattr__(self, '_collection', self._client.get_collection(
-                name="business_cases",
+                name=BUSINESS_CASES_COLLECTION,
                 embedding_function=self._openai_ef
             ))
 

@@ -9,11 +9,9 @@ from openai import OpenAI
 
 load_dotenv()
 
-NOTION_API_KEY = os.getenv("NOTION_API_KEY")
-DATABASE_ID = "3538cd80a7f480aab786c93e0c370bf5"
 PROXY_URL = os.getenv("PROXY_URL")
-CHROMA_PATH = "./chroma_db"
-COLLECTION_NAME = "business_cases"
+CHROMA_PATH = os.getenv("CHROMA_PATH", "./chroma_db")
+COLLECTION_NAME = os.getenv("BUSINESS_CASES_COLLECTION", "business_cases")
 
 
 class ProxyOpenAIEmbeddingFunction(embedding_functions.EmbeddingFunction):
@@ -37,6 +35,13 @@ def create_openai_client():
         api_key=os.getenv("OPENAI_API_KEY"),
         http_client=http_client
     )
+
+
+def get_notion_database_id():
+    database_id = os.getenv("NOTION_DATABASE_ID")
+    if not database_id:
+        raise ValueError("NOTION_DATABASE_ID is required")
+    return database_id
 
 
 def safe_get_text(prop, default=""):
@@ -63,7 +68,7 @@ def safe_get_multi_select(prop):
         return []
     ms = prop.get("multi_select", [])
     if isinstance(ms, list):
-        return [item.get("name", "") for item in ms if isinstance(item, dict)]
+        return [item.get("name", "") for item in ms if isinstance(item, dict) and item.get("name")]
     return []
 
 
@@ -83,9 +88,9 @@ def safe_get_date(prop, default=""):
 
 
 def fetch_notion_cases():
-    url = f"https://api.notion.com/v1/databases/{DATABASE_ID}/query"
+    url = f"https://api.notion.com/v1/databases/{get_notion_database_id()}/query"
     headers = {
-        "Authorization": f"Bearer {NOTION_API_KEY}",
+        "Authorization": f"Bearer {os.getenv('NOTION_API_KEY')}",
         "Content-Type": "application/json",
         "Notion-Version": "2022-06-28"
     }

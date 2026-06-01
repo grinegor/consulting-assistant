@@ -1,12 +1,16 @@
 import chromadb
 from chromadb.utils import embedding_functions
 import os
+import time
 from dotenv import load_dotenv
 
 load_dotenv()
 
+CHROMA_PATH = os.getenv("CHROMA_PATH", "./chroma_db")
+MEMORY_COLLECTION = os.getenv("MEMORY_COLLECTION", "conversation_memory")
+
 # Подключаемся к той же ChromaDB
-client = chromadb.PersistentClient(path="./chroma_db")
+client = chromadb.PersistentClient(path=CHROMA_PATH)
 
 # Используем те же эмбеддинги OpenAI
 openai_ef = embedding_functions.OpenAIEmbeddingFunction(
@@ -16,15 +20,13 @@ openai_ef = embedding_functions.OpenAIEmbeddingFunction(
 
 # Коллекция для памяти диалогов
 memory_collection = client.get_or_create_collection(
-    name="conversation_memory",
+    name=MEMORY_COLLECTION,
     embedding_function=openai_ef
 )
 
 def add_to_memory(user_id: str, user_message: str, assistant_response: str):
     """Сохраняет один оборот диалога в память"""
     doc = f"Пользователь: {user_message}\nАссистент: {assistant_response}"
-    # Используем уникальный ID (можно timestamp + user_id)
-    import time
     doc_id = f"{user_id}_{int(time.time()*1000)}"
     memory_collection.upsert(
         ids=[doc_id],

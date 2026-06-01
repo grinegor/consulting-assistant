@@ -9,10 +9,16 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-NOTION_API_KEY = os.getenv("NOTION_API_KEY")
-DATABASE_ID = "3538cd80a7f480aab786c93e0c370bf5"
-STATE_FILE = "sync_state.json"
-CHROMA_PATH = "./chroma_db"
+STATE_FILE = os.getenv("SYNC_STATE_FILE", "sync_state.json")
+CHROMA_PATH = os.getenv("CHROMA_PATH", "./chroma_db")
+COLLECTION_NAME = os.getenv("BUSINESS_CASES_COLLECTION", "business_cases")
+
+
+def get_notion_database_id():
+    database_id = os.getenv("NOTION_DATABASE_ID")
+    if not database_id:
+        raise ValueError("NOTION_DATABASE_ID is required")
+    return database_id
 
 def safe_get_text(prop, default=""):
     if not prop:
@@ -36,7 +42,7 @@ def safe_get_multi_select(prop):
         return []
     ms = prop.get("multi_select", [])
     if isinstance(ms, list):
-        return [item.get("name", "") for item in ms if isinstance(item, dict)]
+        return [item.get("name", "") for item in ms if isinstance(item, dict) and item.get("name")]
     return []
 
 def safe_get_url(prop, default=""):
@@ -53,9 +59,9 @@ def safe_get_date(prop, default=""):
     return default
 
 def get_all_notion_pages():
-    url = f"https://api.notion.com/v1/databases/{DATABASE_ID}/query"
+    url = f"https://api.notion.com/v1/databases/{get_notion_database_id()}/query"
     headers = {
-        "Authorization": f"Bearer {NOTION_API_KEY}",
+        "Authorization": f"Bearer {os.getenv('NOTION_API_KEY')}",
         "Content-Type": "application/json",
         "Notion-Version": "2022-06-28"
     }
@@ -140,7 +146,7 @@ def sync():
         model_name="text-embedding-3-small"
     )
     collection = chroma_client.get_or_create_collection(
-        name="business_cases",
+        name=COLLECTION_NAME,
         embedding_function=openai_ef
     )
 

@@ -1,0 +1,16 @@
+services:
+  bot:
+    build: .
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY:?OPENAI_API_KEY is required}
+      TELEGRAMBOT_API_KEY: ${TELEGRAMBOT_API_KEY:?TELEGRAMBOT_API_KEY is required}
+      NOTION_API_KEY: ${NOTION_API_KEY:?NOTION_API_KEY is required}
+      NOTION_DATABASE_ID: ${NOTION_DATABASE_ID:?NOTION_DATABASE_ID is required}
+      PROXY_URL: ${PROXY_URL:-}
+      CHROMA_PATH: /app/chroma_db
+      BUSINESS_CASES_COLLECTION: ${BUSINESS_CASES_COLLECTION:-business_cases}
+      MEMORY_COLLECTION: ${MEMORY_COLLECTION:-conversation_memory}
+      SYNC_STATE_FILE: ${SYNC_STATE_FILE:-sync_state.json}
+    volumes:
+      - ./chroma_db:/app/chroma_db
+    restart: unless-stopped
