@@ -4,7 +4,11 @@ from dotenv import load_dotenv
 import os
 import httpx
 
+from logging_config import configure_logging, get_logger
+
 load_dotenv()
+configure_logging()
+logger = get_logger(__name__)
 
 # Для прокси (если нужен)
 http_client = httpx.Client(proxy=os.getenv("PROXY_URL")) if os.getenv("PROXY_URL") else None
@@ -161,7 +165,4 @@ def run_consultation(query: str) -> str:
 # ========== 4. ТЕСТ ==========
 if __name__ == "__main__":
     result = run_consultation("Как автоматизировать обработку клиентских запросов в службе поддержки?")
-    print("\n" + "=" * 60)
-    print("ИТОГОВЫЙ ОТВЕТ КОНСУЛЬТАНТА + КРИТИКА")
-    print("=" * 60)
-    print(result)
+    logger.info("consultation_demo_result", result=result)

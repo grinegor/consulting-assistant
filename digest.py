@@ -4,7 +4,11 @@ from openai import OpenAI
 import os
 from dotenv import load_dotenv
 
+from logging_config import configure_logging, get_logger
+
 load_dotenv()
+configure_logging()
+logger = get_logger(__name__)
 
 # Настройка клиента OpenAI с прокси (как в test.py)
 PROXY_URL = os.getenv("PROXY_URL")
@@ -38,7 +42,7 @@ def fetch_news(limit_per_source=3):
                     "summary": entry.get("summary", "")[:200]  # краткий отрывок
                 })
         except Exception as e:
-            print(f"Ошибка при загрузке {url}: {e}")
+            logger.warning("news_fetch_failed", url=url, error=str(e))
     return all_news
 
 def generate_digest():
@@ -81,4 +85,4 @@ def generate_digest():
 
 # Для теста модуля
 if __name__ == "__main__":
-    print(generate_digest())
+    logger.info("digest_generated", digest=generate_digest())

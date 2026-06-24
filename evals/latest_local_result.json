@@ -1,0 +1,3017 @@
+{
+  "dataset": {
+    "name": "synthetic_portfolio_rag_v1",
+    "question_count": 25,
+    "document_count": 12,
+    "portfolio_safe": true
+  },
+  "metrics": {
+    "precision_at_5": 0.208,
+    "recall_at_5": 1.0
+  },
+  "baseline_metrics": {
+    "precision_at_5": 0.192,
+    "recall_at_5": 0.92
+  },
+  "improvement": {
+    "precision_at_5_delta": 0.016,
+    "recall_at_5_delta": 0.08
+  },
+  "retrievers": {
+    "baseline": "title_category_overlap",
+    "improved": "full_text_hybrid_style_overlap"
+  },
+  "baseline_rows": [
+    {
+      "question_id": "q01",
+      "question": "How can an online school reduce support tickets without hurting learner response quality?",
+      "relevant_doc_ids": [
+        "support_chatbot"
+      ],
+      "retrieved_doc_ids": [
+        "support_chatbot",
+        "manufacturing_quality",
+        "call_summary",
+        "customer_feedback",
+        "document_processing"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "support_chatbot",
+          "title": "AI support chatbot for an online school",
+          "category": "Customer Support",
+          "score": 0.3,
+          "matched_terms": [
+            "online",
+            "school",
+            "support"
+          ]
+        },
+        {
+          "doc_id": "manufacturing_quality",
+          "title": "Manufacturing quality inspection",
+          "category": "Manufacturing",
+          "score": 0.1,
+          "matched_terms": [
+            "quality"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    },
+    {
+      "question_id": "q02",
+      "question": "Which AI case fits FAQ automation, ticket triage, and escalation rules for customer support?",
+      "relevant_doc_ids": [
+        "support_chatbot"
+      ],
+      "retrieved_doc_ids": [
+        "support_chatbot",
+        "customer_feedback",
+        "call_summary",
+        "document_processing",
+        "finance_forecast"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "support_chatbot",
+          "title": "AI support chatbot for an online school",
+          "category": "Customer Support",
+          "score": 0.2222,
+          "matched_terms": [
+            "customer",
+            "support"
+          ]
+        },
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.1111,
+          "matched_terms": [
+            "customer"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "finance_forecast",
+          "title": "Finance forecast copilot",
+          "category": "Finance",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    },
+    {
+      "question_id": "q03",
+      "question": "What should we retrieve for document processing in a consulting company?",
+      "relevant_doc_ids": [
+        "document_processing"
+      ],
+      "retrieved_doc_ids": [
+        "document_processing",
+        "call_summary",
+        "customer_feedback",
+        "finance_forecast",
+        "hr_screening"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.5,
+          "matched_terms": [
+            "consulting",
+            "document",
+            "processing"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "finance_forecast",
+          "title": "Finance forecast copilot",
+          "category": "Finance",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "hr_screening",
+          "title": "HR screening assistant",
+          "category": "HR",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    },
+    {
+      "question_id": "q04",
+      "question": "Find a case about extracting requirements from PDFs and classifying contracts.",
+      "relevant_doc_ids": [
+        "document_processing"
+      ],
+      "retrieved_doc_ids": [
+        "call_summary",
+        "customer_feedback",
+        "document_processing",
+        "finance_forecast",
+        "hr_screening"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "finance_forecast",
+          "title": "Finance forecast copilot",
+          "category": "Finance",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "hr_screening",
+          "title": "HR screening assistant",
+          "category": "HR",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    },
+    {
+      "question_id": "q05",
+      "question": "What is a practical CRM agent pilot for a small sales team?",
+      "relevant_doc_ids": [
+        "sales_crm_agent"
+      ],
+      "retrieved_doc_ids": [
+        "sales_crm_agent",
+        "call_summary",
+        "customer_feedback",
+        "document_processing",
+        "finance_forecast"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "sales_crm_agent",
+          "title": "CRM sales follow-up agent",
+          "category": "Sales",
+          "score": 0.4286,
+          "matched_terms": [
+            "agent",
+            "crm",
+            "sales"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "finance_forecast",
+          "title": "Finance forecast copilot",
+          "category": "Finance",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    },
+    {
+      "question_id": "q06",
+      "question": "Which case covers lead scoring, follow-up emails, and stalled deals?",
+      "relevant_doc_ids": [
+        "sales_crm_agent"
+      ],
+      "retrieved_doc_ids": [
+        "sales_crm_agent",
+        "call_summary",
+        "customer_feedback",
+        "document_processing",
+        "finance_forecast"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "sales_crm_agent",
+          "title": "CRM sales follow-up agent",
+          "category": "Sales",
+          "score": 0.1667,
+          "matched_terms": [
+            "follow"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "finance_forecast",
+          "title": "Finance forecast copilot",
+          "category": "Finance",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    },
+    {
+      "question_id": "q07",
+      "question": "Which AI workflow is realistic for a marketing agency with limited budget?",
+      "relevant_doc_ids": [
+        "marketing_content"
+      ],
+      "retrieved_doc_ids": [
+        "marketing_content",
+        "call_summary",
+        "customer_feedback",
+        "document_processing",
+        "finance_forecast"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "marketing_content",
+          "title": "Marketing agency content workflow",
+          "category": "Marketing",
+          "score": 0.5,
+          "matched_terms": [
+            "agency",
+            "marketing",
+            "workflow"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "finance_forecast",
+          "title": "Finance forecast copilot",
+          "category": "Finance",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    },
+    {
+      "question_id": "q08",
+      "question": "Find a case for campaign briefs, SEO clustering, and creative variants.",
+      "relevant_doc_ids": [
+        "marketing_content"
+      ],
+      "retrieved_doc_ids": [
+        "call_summary",
+        "customer_feedback",
+        "document_processing",
+        "finance_forecast",
+        "hr_screening"
+      ],
+      "precision_at_5": 0.0,
+      "recall_at_5": 0.0,
+      "top_matches": [
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "finance_forecast",
+          "title": "Finance forecast copilot",
+          "category": "Finance",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "hr_screening",
+          "title": "HR screening assistant",
+          "category": "HR",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    },
+    {
+      "question_id": "q09",
+      "question": "How can consultants summarize client calls and create follow-up tasks?",
+      "relevant_doc_ids": [
+        "call_summary"
+      ],
+      "retrieved_doc_ids": [
+        "call_summary",
+        "sales_crm_agent",
+        "customer_feedback",
+        "document_processing",
+        "finance_forecast"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.2857,
+          "matched_terms": [
+            "client",
+            "tasks"
+          ]
+        },
+        {
+          "doc_id": "sales_crm_agent",
+          "title": "CRM sales follow-up agent",
+          "category": "Sales",
+          "score": 0.1429,
+          "matched_terms": [
+            "follow"
+          ]
+        },
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "finance_forecast",
+          "title": "Finance forecast copilot",
+          "category": "Finance",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    },
+    {
+      "question_id": "q10",
+      "question": "Which case covers transcription, meeting summary, and CRM notes?",
+      "relevant_doc_ids": [
+        "call_summary"
+      ],
+      "retrieved_doc_ids": [
+        "call_summary",
+        "sales_crm_agent",
+        "customer_feedback",
+        "document_processing",
+        "finance_forecast"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.2,
+          "matched_terms": [
+            "summary"
+          ]
+        },
+        {
+          "doc_id": "sales_crm_agent",
+          "title": "CRM sales follow-up agent",
+          "category": "Sales",
+          "score": 0.2,
+          "matched_terms": [
+            "crm"
+          ]
+        },
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "finance_forecast",
+          "title": "Finance forecast copilot",
+          "category": "Finance",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    },
+    {
+      "question_id": "q11",
+      "question": "What AI assistant helps finance teams with revenue forecasts and variance notes?",
+      "relevant_doc_ids": [
+        "finance_forecast"
+      ],
+      "retrieved_doc_ids": [
+        "document_processing",
+        "finance_forecast",
+        "hr_screening",
+        "call_summary",
+        "customer_feedback"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.125,
+          "matched_terms": [
+            "assistant"
+          ]
+        },
+        {
+          "doc_id": "finance_forecast",
+          "title": "Finance forecast copilot",
+          "category": "Finance",
+          "score": 0.125,
+          "matched_terms": [
+            "finance"
+          ]
+        },
+        {
+          "doc_id": "hr_screening",
+          "title": "HR screening assistant",
+          "category": "HR",
+          "score": 0.125,
+          "matched_terms": [
+            "assistant"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    },
+    {
+      "question_id": "q12",
+      "question": "Find a case for anomaly flags, cost drivers, and monthly financial review.",
+      "relevant_doc_ids": [
+        "finance_forecast"
+      ],
+      "retrieved_doc_ids": [
+        "legal_contract_review",
+        "call_summary",
+        "customer_feedback",
+        "document_processing",
+        "finance_forecast"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "legal_contract_review",
+          "title": "Legal contract review copilot",
+          "category": "Legal",
+          "score": 0.1429,
+          "matched_terms": [
+            "review"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "finance_forecast",
+          "title": "Finance forecast copilot",
+          "category": "Finance",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    },
+    {
+      "question_id": "q13",
+      "question": "Which AI case supports HR resume screening and interview question suggestions?",
+      "relevant_doc_ids": [
+        "hr_screening"
+      ],
+      "retrieved_doc_ids": [
+        "hr_screening",
+        "call_summary",
+        "customer_feedback",
+        "document_processing",
+        "finance_forecast"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "hr_screening",
+          "title": "HR screening assistant",
+          "category": "HR",
+          "score": 0.1667,
+          "matched_terms": [
+            "screening"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "finance_forecast",
+          "title": "Finance forecast copilot",
+          "category": "Finance",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    },
+    {
+      "question_id": "q14",
+      "question": "Find the recruiting workflow with candidate shortlists and bias review.",
+      "relevant_doc_ids": [
+        "hr_screening"
+      ],
+      "retrieved_doc_ids": [
+        "legal_contract_review",
+        "marketing_content",
+        "call_summary",
+        "customer_feedback",
+        "document_processing"
+      ],
+      "precision_at_5": 0.0,
+      "recall_at_5": 0.0,
+      "top_matches": [
+        {
+          "doc_id": "legal_contract_review",
+          "title": "Legal contract review copilot",
+          "category": "Legal",
+          "score": 0.1667,
+          "matched_terms": [
+            "review"
+          ]
+        },
+        {
+          "doc_id": "marketing_content",
+          "title": "Marketing agency content workflow",
+          "category": "Marketing",
+          "score": 0.1667,
+          "matched_terms": [
+            "workflow"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    },
+    {
+      "question_id": "q15",
+      "question": "What AI use case detects manufacturing defects on a production line?",
+      "relevant_doc_ids": [
+        "manufacturing_quality"
+      ],
+      "retrieved_doc_ids": [
+        "manufacturing_quality",
+        "call_summary",
+        "customer_feedback",
+        "document_processing",
+        "finance_forecast"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "manufacturing_quality",
+          "title": "Manufacturing quality inspection",
+          "category": "Manufacturing",
+          "score": 0.1667,
+          "matched_terms": [
+            "manufacturing"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "finance_forecast",
+          "title": "Finance forecast copilot",
+          "category": "Finance",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    },
+    {
+      "question_id": "q16",
+      "question": "Which case covers computer vision quality inspection and operator review?",
+      "relevant_doc_ids": [
+        "manufacturing_quality"
+      ],
+      "retrieved_doc_ids": [
+        "manufacturing_quality",
+        "legal_contract_review",
+        "call_summary",
+        "customer_feedback",
+        "document_processing"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "manufacturing_quality",
+          "title": "Manufacturing quality inspection",
+          "category": "Manufacturing",
+          "score": 0.3333,
+          "matched_terms": [
+            "inspection",
+            "quality"
+          ]
+        },
+        {
+          "doc_id": "legal_contract_review",
+          "title": "Legal contract review copilot",
+          "category": "Legal",
+          "score": 0.1667,
+          "matched_terms": [
+            "review"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    },
+    {
+      "question_id": "q17",
+      "question": "Find a legal AI case for risky clauses and contract obligations.",
+      "relevant_doc_ids": [
+        "legal_contract_review"
+      ],
+      "retrieved_doc_ids": [
+        "legal_contract_review",
+        "call_summary",
+        "customer_feedback",
+        "document_processing",
+        "finance_forecast"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "legal_contract_review",
+          "title": "Legal contract review copilot",
+          "category": "Legal",
+          "score": 0.4,
+          "matched_terms": [
+            "contract",
+            "legal"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "finance_forecast",
+          "title": "Finance forecast copilot",
+          "category": "Finance",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    },
+    {
+      "question_id": "q18",
+      "question": "Which copilot compares contract templates and routes high-risk agreements to counsel?",
+      "relevant_doc_ids": [
+        "legal_contract_review"
+      ],
+      "retrieved_doc_ids": [
+        "legal_contract_review",
+        "finance_forecast",
+        "call_summary",
+        "customer_feedback",
+        "document_processing"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "legal_contract_review",
+          "title": "Legal contract review copilot",
+          "category": "Legal",
+          "score": 0.2222,
+          "matched_terms": [
+            "contract",
+            "copilot"
+          ]
+        },
+        {
+          "doc_id": "finance_forecast",
+          "title": "Finance forecast copilot",
+          "category": "Finance",
+          "score": 0.1111,
+          "matched_terms": [
+            "copilot"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    },
+    {
+      "question_id": "q19",
+      "question": "What case helps retail teams forecast demand and prevent stockouts?",
+      "relevant_doc_ids": [
+        "inventory_demand"
+      ],
+      "retrieved_doc_ids": [
+        "inventory_demand",
+        "finance_forecast",
+        "call_summary",
+        "customer_feedback",
+        "document_processing"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "inventory_demand",
+          "title": "Retail inventory demand planning",
+          "category": "Retail",
+          "score": 0.2857,
+          "matched_terms": [
+            "demand",
+            "retail"
+          ]
+        },
+        {
+          "doc_id": "finance_forecast",
+          "title": "Finance forecast copilot",
+          "category": "Finance",
+          "score": 0.1429,
+          "matched_terms": [
+            "forecast"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    },
+    {
+      "question_id": "q20",
+      "question": "Find inventory replenishment suggestions using seasonal trends.",
+      "relevant_doc_ids": [
+        "inventory_demand"
+      ],
+      "retrieved_doc_ids": [
+        "inventory_demand",
+        "call_summary",
+        "customer_feedback",
+        "document_processing",
+        "finance_forecast"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "inventory_demand",
+          "title": "Retail inventory demand planning",
+          "category": "Retail",
+          "score": 0.1667,
+          "matched_terms": [
+            "inventory"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "finance_forecast",
+          "title": "Finance forecast copilot",
+          "category": "Finance",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    },
+    {
+      "question_id": "q21",
+      "question": "Which case analyzes customer feedback, sentiment clusters, and churn signals?",
+      "relevant_doc_ids": [
+        "customer_feedback"
+      ],
+      "retrieved_doc_ids": [
+        "customer_feedback",
+        "support_chatbot",
+        "call_summary",
+        "document_processing",
+        "finance_forecast"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.2857,
+          "matched_terms": [
+            "customer",
+            "feedback"
+          ]
+        },
+        {
+          "doc_id": "support_chatbot",
+          "title": "AI support chatbot for an online school",
+          "category": "Customer Support",
+          "score": 0.1429,
+          "matched_terms": [
+            "customer"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "finance_forecast",
+          "title": "Finance forecast copilot",
+          "category": "Finance",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    },
+    {
+      "question_id": "q22",
+      "question": "Find a workflow for survey comments, feature requests, and executive dashboards.",
+      "relevant_doc_ids": [
+        "customer_feedback"
+      ],
+      "retrieved_doc_ids": [
+        "marketing_content",
+        "call_summary",
+        "customer_feedback",
+        "document_processing",
+        "finance_forecast"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "marketing_content",
+          "title": "Marketing agency content workflow",
+          "category": "Marketing",
+          "score": 0.1429,
+          "matched_terms": [
+            "workflow"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "finance_forecast",
+          "title": "Finance forecast copilot",
+          "category": "Finance",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    },
+    {
+      "question_id": "q23",
+      "question": "What RAG case searches internal policies, playbooks, and onboarding guides?",
+      "relevant_doc_ids": [
+        "knowledge_base"
+      ],
+      "retrieved_doc_ids": [
+        "knowledge_base",
+        "call_summary",
+        "customer_feedback",
+        "document_processing",
+        "finance_forecast"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "knowledge_base",
+          "title": "Internal knowledge base search",
+          "category": "Knowledge Management",
+          "score": 0.1429,
+          "matched_terms": [
+            "internal"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "finance_forecast",
+          "title": "Finance forecast copilot",
+          "category": "Finance",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    },
+    {
+      "question_id": "q24",
+      "question": "Which knowledge base workflow includes citations and answer confidence warnings?",
+      "relevant_doc_ids": [
+        "knowledge_base"
+      ],
+      "retrieved_doc_ids": [
+        "knowledge_base",
+        "marketing_content",
+        "call_summary",
+        "customer_feedback",
+        "document_processing"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "knowledge_base",
+          "title": "Internal knowledge base search",
+          "category": "Knowledge Management",
+          "score": 0.25,
+          "matched_terms": [
+            "base",
+            "knowledge"
+          ]
+        },
+        {
+          "doc_id": "marketing_content",
+          "title": "Marketing agency content workflow",
+          "category": "Marketing",
+          "score": 0.125,
+          "matched_terms": [
+            "workflow"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    },
+    {
+      "question_id": "q25",
+      "question": "Which cases are relevant to support automation and internal knowledge base search?",
+      "relevant_doc_ids": [
+        "support_chatbot",
+        "knowledge_base"
+      ],
+      "retrieved_doc_ids": [
+        "knowledge_base",
+        "support_chatbot",
+        "call_summary",
+        "customer_feedback",
+        "document_processing"
+      ],
+      "precision_at_5": 0.4,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "knowledge_base",
+          "title": "Internal knowledge base search",
+          "category": "Knowledge Management",
+          "score": 0.5,
+          "matched_terms": [
+            "base",
+            "internal",
+            "knowledge",
+            "search"
+          ]
+        },
+        {
+          "doc_id": "support_chatbot",
+          "title": "AI support chatbot for an online school",
+          "category": "Customer Support",
+          "score": 0.125,
+          "matched_terms": [
+            "support"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    }
+  ],
+  "rows": [
+    {
+      "question_id": "q01",
+      "question": "How can an online school reduce support tickets without hurting learner response quality?",
+      "relevant_doc_ids": [
+        "support_chatbot"
+      ],
+      "retrieved_doc_ids": [
+        "support_chatbot",
+        "call_summary",
+        "manufacturing_quality",
+        "customer_feedback",
+        "document_processing"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "support_chatbot",
+          "title": "AI support chatbot for an online school",
+          "category": "Customer Support",
+          "score": 0.6,
+          "matched_terms": [
+            "learner",
+            "online",
+            "quality",
+            "response",
+            "school",
+            "support"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.1,
+          "matched_terms": [
+            "quality"
+          ]
+        },
+        {
+          "doc_id": "manufacturing_quality",
+          "title": "Manufacturing quality inspection",
+          "category": "Manufacturing",
+          "score": 0.1,
+          "matched_terms": [
+            "quality"
+          ]
+        },
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    },
+    {
+      "question_id": "q02",
+      "question": "Which AI case fits FAQ automation, ticket triage, and escalation rules for customer support?",
+      "relevant_doc_ids": [
+        "support_chatbot"
+      ],
+      "retrieved_doc_ids": [
+        "support_chatbot",
+        "customer_feedback",
+        "call_summary",
+        "document_processing",
+        "finance_forecast"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "support_chatbot",
+          "title": "AI support chatbot for an online school",
+          "category": "Customer Support",
+          "score": 0.8889,
+          "matched_terms": [
+            "automation",
+            "customer",
+            "escalation",
+            "faq",
+            "rules",
+            "support",
+            "ticket",
+            "triage"
+          ]
+        },
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.1111,
+          "matched_terms": [
+            "customer"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "finance_forecast",
+          "title": "Finance forecast copilot",
+          "category": "Finance",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    },
+    {
+      "question_id": "q03",
+      "question": "What should we retrieve for document processing in a consulting company?",
+      "relevant_doc_ids": [
+        "document_processing"
+      ],
+      "retrieved_doc_ids": [
+        "document_processing",
+        "call_summary",
+        "customer_feedback",
+        "finance_forecast",
+        "hr_screening"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.6667,
+          "matched_terms": [
+            "company",
+            "consulting",
+            "document",
+            "processing"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.1667,
+          "matched_terms": [
+            "consulting"
+          ]
+        },
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "finance_forecast",
+          "title": "Finance forecast copilot",
+          "category": "Finance",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "hr_screening",
+          "title": "HR screening assistant",
+          "category": "HR",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    },
+    {
+      "question_id": "q04",
+      "question": "Find a case about extracting requirements from PDFs and classifying contracts.",
+      "relevant_doc_ids": [
+        "document_processing"
+      ],
+      "retrieved_doc_ids": [
+        "document_processing",
+        "call_summary",
+        "customer_feedback",
+        "finance_forecast",
+        "hr_screening"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.6667,
+          "matched_terms": [
+            "contracts",
+            "from",
+            "pdfs",
+            "requirements"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "finance_forecast",
+          "title": "Finance forecast copilot",
+          "category": "Finance",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "hr_screening",
+          "title": "HR screening assistant",
+          "category": "HR",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    },
+    {
+      "question_id": "q05",
+      "question": "What is a practical CRM agent pilot for a small sales team?",
+      "relevant_doc_ids": [
+        "sales_crm_agent"
+      ],
+      "retrieved_doc_ids": [
+        "sales_crm_agent",
+        "call_summary",
+        "customer_feedback",
+        "document_processing",
+        "finance_forecast"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "sales_crm_agent",
+          "title": "CRM sales follow-up agent",
+          "category": "Sales",
+          "score": 0.5714,
+          "matched_terms": [
+            "agent",
+            "crm",
+            "sales",
+            "team"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.1429,
+          "matched_terms": [
+            "crm"
+          ]
+        },
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "finance_forecast",
+          "title": "Finance forecast copilot",
+          "category": "Finance",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    },
+    {
+      "question_id": "q06",
+      "question": "Which case covers lead scoring, follow-up emails, and stalled deals?",
+      "relevant_doc_ids": [
+        "sales_crm_agent"
+      ],
+      "retrieved_doc_ids": [
+        "sales_crm_agent",
+        "call_summary",
+        "customer_feedback",
+        "document_processing",
+        "finance_forecast"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "sales_crm_agent",
+          "title": "CRM sales follow-up agent",
+          "category": "Sales",
+          "score": 0.6667,
+          "matched_terms": [
+            "deals",
+            "emails",
+            "follow",
+            "stalled"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.1667,
+          "matched_terms": [
+            "follow"
+          ]
+        },
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "finance_forecast",
+          "title": "Finance forecast copilot",
+          "category": "Finance",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    },
+    {
+      "question_id": "q07",
+      "question": "Which AI workflow is realistic for a marketing agency with limited budget?",
+      "relevant_doc_ids": [
+        "marketing_content"
+      ],
+      "retrieved_doc_ids": [
+        "marketing_content",
+        "document_processing",
+        "call_summary",
+        "customer_feedback",
+        "finance_forecast"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "marketing_content",
+          "title": "Marketing agency content workflow",
+          "category": "Marketing",
+          "score": 0.6667,
+          "matched_terms": [
+            "agency",
+            "budget",
+            "marketing",
+            "workflow"
+          ]
+        },
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.1667,
+          "matched_terms": [
+            "workflow"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "finance_forecast",
+          "title": "Finance forecast copilot",
+          "category": "Finance",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    },
+    {
+      "question_id": "q08",
+      "question": "Find a case for campaign briefs, SEO clustering, and creative variants.",
+      "relevant_doc_ids": [
+        "marketing_content"
+      ],
+      "retrieved_doc_ids": [
+        "marketing_content",
+        "call_summary",
+        "customer_feedback",
+        "document_processing",
+        "finance_forecast"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "marketing_content",
+          "title": "Marketing agency content workflow",
+          "category": "Marketing",
+          "score": 1.0,
+          "matched_terms": [
+            "briefs",
+            "campaign",
+            "clustering",
+            "creative",
+            "seo",
+            "variants"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "finance_forecast",
+          "title": "Finance forecast copilot",
+          "category": "Finance",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    },
+    {
+      "question_id": "q09",
+      "question": "How can consultants summarize client calls and create follow-up tasks?",
+      "relevant_doc_ids": [
+        "call_summary"
+      ],
+      "retrieved_doc_ids": [
+        "call_summary",
+        "document_processing",
+        "sales_crm_agent",
+        "customer_feedback",
+        "finance_forecast"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.4286,
+          "matched_terms": [
+            "client",
+            "follow",
+            "tasks"
+          ]
+        },
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.2857,
+          "matched_terms": [
+            "client",
+            "summarize"
+          ]
+        },
+        {
+          "doc_id": "sales_crm_agent",
+          "title": "CRM sales follow-up agent",
+          "category": "Sales",
+          "score": 0.2857,
+          "matched_terms": [
+            "calls",
+            "follow"
+          ]
+        },
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "finance_forecast",
+          "title": "Finance forecast copilot",
+          "category": "Finance",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    },
+    {
+      "question_id": "q10",
+      "question": "Which case covers transcription, meeting summary, and CRM notes?",
+      "relevant_doc_ids": [
+        "call_summary"
+      ],
+      "retrieved_doc_ids": [
+        "call_summary",
+        "customer_feedback",
+        "finance_forecast",
+        "knowledge_base",
+        "manufacturing_quality"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 1.0,
+          "matched_terms": [
+            "crm",
+            "meeting",
+            "notes",
+            "summary",
+            "transcription"
+          ]
+        },
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.2,
+          "matched_terms": [
+            "summary"
+          ]
+        },
+        {
+          "doc_id": "finance_forecast",
+          "title": "Finance forecast copilot",
+          "category": "Finance",
+          "score": 0.2,
+          "matched_terms": [
+            "notes"
+          ]
+        },
+        {
+          "doc_id": "knowledge_base",
+          "title": "Internal knowledge base search",
+          "category": "Knowledge Management",
+          "score": 0.2,
+          "matched_terms": [
+            "notes"
+          ]
+        },
+        {
+          "doc_id": "manufacturing_quality",
+          "title": "Manufacturing quality inspection",
+          "category": "Manufacturing",
+          "score": 0.2,
+          "matched_terms": [
+            "notes"
+          ]
+        }
+      ]
+    },
+    {
+      "question_id": "q11",
+      "question": "What AI assistant helps finance teams with revenue forecasts and variance notes?",
+      "relevant_doc_ids": [
+        "finance_forecast"
+      ],
+      "retrieved_doc_ids": [
+        "finance_forecast",
+        "call_summary",
+        "document_processing",
+        "hr_screening",
+        "knowledge_base"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "finance_forecast",
+          "title": "Finance forecast copilot",
+          "category": "Finance",
+          "score": 0.625,
+          "matched_terms": [
+            "assistant",
+            "finance",
+            "notes",
+            "revenue",
+            "variance"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.25,
+          "matched_terms": [
+            "notes",
+            "teams"
+          ]
+        },
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.125,
+          "matched_terms": [
+            "assistant"
+          ]
+        },
+        {
+          "doc_id": "hr_screening",
+          "title": "HR screening assistant",
+          "category": "HR",
+          "score": 0.125,
+          "matched_terms": [
+            "assistant"
+          ]
+        },
+        {
+          "doc_id": "knowledge_base",
+          "title": "Internal knowledge base search",
+          "category": "Knowledge Management",
+          "score": 0.125,
+          "matched_terms": [
+            "notes"
+          ]
+        }
+      ]
+    },
+    {
+      "question_id": "q12",
+      "question": "Find a case for anomaly flags, cost drivers, and monthly financial review.",
+      "relevant_doc_ids": [
+        "finance_forecast"
+      ],
+      "retrieved_doc_ids": [
+        "finance_forecast",
+        "call_summary",
+        "hr_screening",
+        "inventory_demand",
+        "legal_contract_review"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "finance_forecast",
+          "title": "Finance forecast copilot",
+          "category": "Finance",
+          "score": 0.5714,
+          "matched_terms": [
+            "cost",
+            "drivers",
+            "flags",
+            "monthly"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.1429,
+          "matched_terms": [
+            "review"
+          ]
+        },
+        {
+          "doc_id": "hr_screening",
+          "title": "HR screening assistant",
+          "category": "HR",
+          "score": 0.1429,
+          "matched_terms": [
+            "review"
+          ]
+        },
+        {
+          "doc_id": "inventory_demand",
+          "title": "Retail inventory demand planning",
+          "category": "Retail",
+          "score": 0.1429,
+          "matched_terms": [
+            "review"
+          ]
+        },
+        {
+          "doc_id": "legal_contract_review",
+          "title": "Legal contract review copilot",
+          "category": "Legal",
+          "score": 0.1429,
+          "matched_terms": [
+            "review"
+          ]
+        }
+      ]
+    },
+    {
+      "question_id": "q13",
+      "question": "Which AI case supports HR resume screening and interview question suggestions?",
+      "relevant_doc_ids": [
+        "hr_screening"
+      ],
+      "retrieved_doc_ids": [
+        "hr_screening",
+        "inventory_demand",
+        "call_summary",
+        "customer_feedback",
+        "document_processing"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "hr_screening",
+          "title": "HR screening assistant",
+          "category": "HR",
+          "score": 0.8333,
+          "matched_terms": [
+            "interview",
+            "question",
+            "resume",
+            "screening",
+            "suggestions"
+          ]
+        },
+        {
+          "doc_id": "inventory_demand",
+          "title": "Retail inventory demand planning",
+          "category": "Retail",
+          "score": 0.1667,
+          "matched_terms": [
+            "suggestions"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    },
+    {
+      "question_id": "q14",
+      "question": "Find the recruiting workflow with candidate shortlists and bias review.",
+      "relevant_doc_ids": [
+        "hr_screening"
+      ],
+      "retrieved_doc_ids": [
+        "hr_screening",
+        "call_summary",
+        "document_processing",
+        "inventory_demand",
+        "legal_contract_review"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "hr_screening",
+          "title": "HR screening assistant",
+          "category": "HR",
+          "score": 0.8333,
+          "matched_terms": [
+            "bias",
+            "candidate",
+            "recruiting",
+            "review",
+            "shortlists"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.1667,
+          "matched_terms": [
+            "review"
+          ]
+        },
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.1667,
+          "matched_terms": [
+            "workflow"
+          ]
+        },
+        {
+          "doc_id": "inventory_demand",
+          "title": "Retail inventory demand planning",
+          "category": "Retail",
+          "score": 0.1667,
+          "matched_terms": [
+            "review"
+          ]
+        },
+        {
+          "doc_id": "legal_contract_review",
+          "title": "Legal contract review copilot",
+          "category": "Legal",
+          "score": 0.1667,
+          "matched_terms": [
+            "review"
+          ]
+        }
+      ]
+    },
+    {
+      "question_id": "q15",
+      "question": "What AI use case detects manufacturing defects on a production line?",
+      "relevant_doc_ids": [
+        "manufacturing_quality"
+      ],
+      "retrieved_doc_ids": [
+        "manufacturing_quality",
+        "marketing_content",
+        "call_summary",
+        "customer_feedback",
+        "document_processing"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "manufacturing_quality",
+          "title": "Manufacturing quality inspection",
+          "category": "Manufacturing",
+          "score": 0.5,
+          "matched_terms": [
+            "line",
+            "manufacturing",
+            "production"
+          ]
+        },
+        {
+          "doc_id": "marketing_content",
+          "title": "Marketing agency content workflow",
+          "category": "Marketing",
+          "score": 0.1667,
+          "matched_terms": [
+            "use"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    },
+    {
+      "question_id": "q16",
+      "question": "Which case covers computer vision quality inspection and operator review?",
+      "relevant_doc_ids": [
+        "manufacturing_quality"
+      ],
+      "retrieved_doc_ids": [
+        "manufacturing_quality",
+        "call_summary",
+        "hr_screening",
+        "inventory_demand",
+        "legal_contract_review"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "manufacturing_quality",
+          "title": "Manufacturing quality inspection",
+          "category": "Manufacturing",
+          "score": 1.0,
+          "matched_terms": [
+            "computer",
+            "inspection",
+            "operator",
+            "quality",
+            "review",
+            "vision"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.3333,
+          "matched_terms": [
+            "quality",
+            "review"
+          ]
+        },
+        {
+          "doc_id": "hr_screening",
+          "title": "HR screening assistant",
+          "category": "HR",
+          "score": 0.1667,
+          "matched_terms": [
+            "review"
+          ]
+        },
+        {
+          "doc_id": "inventory_demand",
+          "title": "Retail inventory demand planning",
+          "category": "Retail",
+          "score": 0.1667,
+          "matched_terms": [
+            "review"
+          ]
+        },
+        {
+          "doc_id": "legal_contract_review",
+          "title": "Legal contract review copilot",
+          "category": "Legal",
+          "score": 0.1667,
+          "matched_terms": [
+            "review"
+          ]
+        }
+      ]
+    },
+    {
+      "question_id": "q17",
+      "question": "Find a legal AI case for risky clauses and contract obligations.",
+      "relevant_doc_ids": [
+        "legal_contract_review"
+      ],
+      "retrieved_doc_ids": [
+        "legal_contract_review",
+        "call_summary",
+        "customer_feedback",
+        "document_processing",
+        "finance_forecast"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "legal_contract_review",
+          "title": "Legal contract review copilot",
+          "category": "Legal",
+          "score": 1.0,
+          "matched_terms": [
+            "clauses",
+            "contract",
+            "legal",
+            "obligations",
+            "risky"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "finance_forecast",
+          "title": "Finance forecast copilot",
+          "category": "Finance",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    },
+    {
+      "question_id": "q18",
+      "question": "Which copilot compares contract templates and routes high-risk agreements to counsel?",
+      "relevant_doc_ids": [
+        "legal_contract_review"
+      ],
+      "retrieved_doc_ids": [
+        "legal_contract_review",
+        "finance_forecast",
+        "call_summary",
+        "customer_feedback",
+        "document_processing"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "legal_contract_review",
+          "title": "Legal contract review copilot",
+          "category": "Legal",
+          "score": 1.0,
+          "matched_terms": [
+            "agreements",
+            "compares",
+            "contract",
+            "copilot",
+            "counsel",
+            "high",
+            "risk",
+            "routes",
+            "templates"
+          ]
+        },
+        {
+          "doc_id": "finance_forecast",
+          "title": "Finance forecast copilot",
+          "category": "Finance",
+          "score": 0.1111,
+          "matched_terms": [
+            "copilot"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    },
+    {
+      "question_id": "q19",
+      "question": "What case helps retail teams forecast demand and prevent stockouts?",
+      "relevant_doc_ids": [
+        "inventory_demand"
+      ],
+      "retrieved_doc_ids": [
+        "inventory_demand",
+        "call_summary",
+        "finance_forecast",
+        "customer_feedback",
+        "document_processing"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "inventory_demand",
+          "title": "Retail inventory demand planning",
+          "category": "Retail",
+          "score": 0.2857,
+          "matched_terms": [
+            "demand",
+            "retail"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.1429,
+          "matched_terms": [
+            "teams"
+          ]
+        },
+        {
+          "doc_id": "finance_forecast",
+          "title": "Finance forecast copilot",
+          "category": "Finance",
+          "score": 0.1429,
+          "matched_terms": [
+            "forecast"
+          ]
+        },
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    },
+    {
+      "question_id": "q20",
+      "question": "Find inventory replenishment suggestions using seasonal trends.",
+      "relevant_doc_ids": [
+        "inventory_demand"
+      ],
+      "retrieved_doc_ids": [
+        "inventory_demand",
+        "hr_screening",
+        "call_summary",
+        "customer_feedback",
+        "document_processing"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "inventory_demand",
+          "title": "Retail inventory demand planning",
+          "category": "Retail",
+          "score": 1.0,
+          "matched_terms": [
+            "inventory",
+            "replenishment",
+            "seasonal",
+            "suggestions",
+            "trends",
+            "using"
+          ]
+        },
+        {
+          "doc_id": "hr_screening",
+          "title": "HR screening assistant",
+          "category": "HR",
+          "score": 0.1667,
+          "matched_terms": [
+            "suggestions"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    },
+    {
+      "question_id": "q21",
+      "question": "Which case analyzes customer feedback, sentiment clusters, and churn signals?",
+      "relevant_doc_ids": [
+        "customer_feedback"
+      ],
+      "retrieved_doc_ids": [
+        "customer_feedback",
+        "support_chatbot",
+        "call_summary",
+        "document_processing",
+        "finance_forecast"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.8571,
+          "matched_terms": [
+            "churn",
+            "clusters",
+            "customer",
+            "feedback",
+            "sentiment",
+            "signals"
+          ]
+        },
+        {
+          "doc_id": "support_chatbot",
+          "title": "AI support chatbot for an online school",
+          "category": "Customer Support",
+          "score": 0.1429,
+          "matched_terms": [
+            "customer"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "finance_forecast",
+          "title": "Finance forecast copilot",
+          "category": "Finance",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    },
+    {
+      "question_id": "q22",
+      "question": "Find a workflow for survey comments, feature requests, and executive dashboards.",
+      "relevant_doc_ids": [
+        "customer_feedback"
+      ],
+      "retrieved_doc_ids": [
+        "customer_feedback",
+        "document_processing",
+        "marketing_content",
+        "call_summary",
+        "finance_forecast"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.8571,
+          "matched_terms": [
+            "comments",
+            "dashboards",
+            "executive",
+            "feature",
+            "requests",
+            "survey"
+          ]
+        },
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.1429,
+          "matched_terms": [
+            "workflow"
+          ]
+        },
+        {
+          "doc_id": "marketing_content",
+          "title": "Marketing agency content workflow",
+          "category": "Marketing",
+          "score": 0.1429,
+          "matched_terms": [
+            "workflow"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "finance_forecast",
+          "title": "Finance forecast copilot",
+          "category": "Finance",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    },
+    {
+      "question_id": "q23",
+      "question": "What RAG case searches internal policies, playbooks, and onboarding guides?",
+      "relevant_doc_ids": [
+        "knowledge_base"
+      ],
+      "retrieved_doc_ids": [
+        "knowledge_base",
+        "hr_screening",
+        "call_summary",
+        "customer_feedback",
+        "document_processing"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "knowledge_base",
+          "title": "Internal knowledge base search",
+          "category": "Knowledge Management",
+          "score": 0.7143,
+          "matched_terms": [
+            "guides",
+            "internal",
+            "onboarding",
+            "playbooks",
+            "policies"
+          ]
+        },
+        {
+          "doc_id": "hr_screening",
+          "title": "HR screening assistant",
+          "category": "HR",
+          "score": 0.1429,
+          "matched_terms": [
+            "policies"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    },
+    {
+      "question_id": "q24",
+      "question": "Which knowledge base workflow includes citations and answer confidence warnings?",
+      "relevant_doc_ids": [
+        "knowledge_base"
+      ],
+      "retrieved_doc_ids": [
+        "knowledge_base",
+        "document_processing",
+        "marketing_content",
+        "call_summary",
+        "customer_feedback"
+      ],
+      "precision_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "knowledge_base",
+          "title": "Internal knowledge base search",
+          "category": "Knowledge Management",
+          "score": 0.75,
+          "matched_terms": [
+            "answer",
+            "base",
+            "citations",
+            "confidence",
+            "knowledge",
+            "warnings"
+          ]
+        },
+        {
+          "doc_id": "document_processing",
+          "title": "Consulting document processing assistant",
+          "category": "Operations",
+          "score": 0.125,
+          "matched_terms": [
+            "workflow"
+          ]
+        },
+        {
+          "doc_id": "marketing_content",
+          "title": "Marketing agency content workflow",
+          "category": "Marketing",
+          "score": 0.125,
+          "matched_terms": [
+            "workflow"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    },
+    {
+      "question_id": "q25",
+      "question": "Which cases are relevant to support automation and internal knowledge base search?",
+      "relevant_doc_ids": [
+        "support_chatbot",
+        "knowledge_base"
+      ],
+      "retrieved_doc_ids": [
+        "knowledge_base",
+        "support_chatbot",
+        "marketing_content",
+        "call_summary",
+        "customer_feedback"
+      ],
+      "precision_at_5": 0.4,
+      "recall_at_5": 1.0,
+      "top_matches": [
+        {
+          "doc_id": "knowledge_base",
+          "title": "Internal knowledge base search",
+          "category": "Knowledge Management",
+          "score": 0.5,
+          "matched_terms": [
+            "base",
+            "internal",
+            "knowledge",
+            "search"
+          ]
+        },
+        {
+          "doc_id": "support_chatbot",
+          "title": "AI support chatbot for an online school",
+          "category": "Customer Support",
+          "score": 0.25,
+          "matched_terms": [
+            "automation",
+            "support"
+          ]
+        },
+        {
+          "doc_id": "marketing_content",
+          "title": "Marketing agency content workflow",
+          "category": "Marketing",
+          "score": 0.125,
+          "matched_terms": [
+            "cases"
+          ]
+        },
+        {
+          "doc_id": "call_summary",
+          "title": "Client call summary and tasks",
+          "category": "Productivity",
+          "score": 0.0,
+          "matched_terms": []
+        },
+        {
+          "doc_id": "customer_feedback",
+          "title": "Customer feedback analytics",
+          "category": "Analytics",
+          "score": 0.0,
+          "matched_terms": []
+        }
+      ]
+    }
+  ],
+  "generated_at": "2026-06-24T09:16:04.885741+00:00",
+  "llm_judge": {
+    "status": "skipped",
+    "reason": "disabled by --skip-llm"
+  }
+}

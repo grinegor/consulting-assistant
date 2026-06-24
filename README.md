@@ -24,13 +24,14 @@ This project addresses that workflow with:
 
 - **Telegram bot UX:** main menu, chat mode, business consultation mode, save-case flow, help/info screens.
 - **Multi-agent consultation:** CrewAI Researcher, Consultant, and Critic agents collaborate on business AI questions.
-- **RAG knowledge base:** `ChromaRAGTool` retrieves AI business cases from ChromaDB using OpenAI embeddings.
+- **Hybrid RAG knowledge base:** `ChromaRAGTool` retrieves AI business cases with OpenAI embeddings, BM25 lexical search, Reciprocal Rank Fusion, and optional cross-encoder reranking.
 - **Notion case storage:** structured case creation through the Notion API.
 - **Notion -> ChromaDB sync:** full rebuild and incremental sync scripts keep RAG data fresh.
 - **Conversation memory:** previous user turns are stored and retrieved from ChromaDB.
 - **Voice input:** Telegram voice messages are transcribed with Whisper before being routed to chat or consultation mode.
 - **Photo analysis in chat mode:** image messages can be sent to the OpenAI vision-capable chat endpoint.
 - **Tests and CI:** pytest suite with fakes/mocks, plus GitHub Actions.
+- **Offline evals:** synthetic portfolio-safe RAG eval with baseline vs improved retrieval, precision@5, recall@5, and optional LLM-as-judge.
 - **Dockerized runtime:** Dockerfile and Compose setup with a ChromaDB volume.
 
 ## Architecture
@@ -51,8 +52,11 @@ flowchart LR
 flowchart LR
     Q["Business Question"] --> R["Researcher Agent"]
     R --> T["Business Cases Search<br/>rag_tool.py"]
-    T --> V["ChromaDB<br/>business_cases"]
-    V --> R
+    T --> H["Hybrid Retrieval<br/>Semantic + BM25 + RRF"]
+    H --> V["ChromaDB<br/>business_cases"]
+    H --> X["Optional Cross-Encoder<br/>ms-marco-MiniLM-L-6-v2"]
+    V --> H
+    X --> R
     R --> A["Consultant Agent"]
     A --> C["Critic Agent"]
     C --> F["Final Telegram Answer"]
@@ -72,14 +76,15 @@ This structure is intentionally more conservative than a single prompt because i
 
 ## RAG Pipeline
 
-Business cases are stored in Notion and synchronized into a local ChromaDB collection:
+Business cases are stored in Notion and synchronized into a local ChromaDB collection. Long records are split into 700-word chunks with 120-word overlap before indexing:
 
 ```mermaid
 flowchart LR
     N["Notion DB<br/>business cases"] --> SY["Sync scripts<br/>notion_to_chromadb.py<br/>sync_notion_to_chromadb.py"]
-    SY --> E["OpenAI Embeddings<br/>text-embedding-3-small"]
+    SY --> CH["Chunking<br/>700 words / 120 overlap"]
+    CH --> E["OpenAI Embeddings<br/>text-embedding-3-small"]
     E --> C["ChromaDB<br/>business_cases collection"]
-    C --> R["RAG Search<br/>rag_tool.py"]
+    C --> R["Hybrid RAG Search<br/>semantic + BM25 + RRF"]
     R --> A["CrewAI Researcher"]
 ```
 
@@ -113,6 +118,9 @@ The voice path is kept inside `telegram_bot.py`, while pure helper logic is test
 - OpenAI API: chat, embeddings, Whisper transcription
 - CrewAI
 - ChromaDB
+- rank_bm25 for lexical retrieval
+- structlog for structured application logs
+- optional sentence-transformers cross-encoder reranking
 - Notion API
 - pytest and pytest-asyncio
 - Docker and Docker Compose
@@ -167,6 +175,8 @@ NOTION_DATABASE_ID=your_notion_database_id
 CHROMA_PATH=./chroma_db
 BUSINESS_CASES_COLLECTION=business_cases
 MEMORY_COLLECTION=conversation_memory
+LOG_LEVEL=INFO
+RAG_ENABLE_RERANKING=false
 ```
 
 Run the bot:
@@ -199,6 +209,7 @@ The Compose setup:
 
 - reads secrets and ids from `.env`;
 - mounts `./chroma_db` into the container for local ChromaDB persistence;
+- includes a local process healthcheck that does not call Telegram, OpenAI, or Notion;
 - runs `python telegram_bot.py`.
 
 Stop the service:
@@ -224,8 +235,8 @@ python -m pytest -q
 Run eval and stress subsets:
 
 ```bash
-python -m pytest -q -m eval
-python -m pytest -q -m stress
+.venv/bin/python -m pytest -q -m eval
+.venv/bin/python -m pytest -q -m stress
 ```
 
 Compile-check project files:
@@ -235,6 +246,44 @@ python -m compileall -q telegram_bot.py scribe.py agents.py digest.py main.py me
 ```
 
 Tests use mocks/fakes instead of real Telegram, OpenAI, Notion, CrewAI, or ChromaDB calls.
+
+## Offline RAG Evals
+
+Run the deterministic portfolio-safe eval:
+
+```bash
+.venv/bin/python -m evals.portfolio_rag_eval --skip-llm
+```
+
+This writes `evals/latest_local_result.json` and prints a compact summary. The dataset contains 25 synthetic business questions and 12 synthetic case documents, so it is safe to publish and fast enough for local CI-style checks. Metrics are computed over the top five retrieved documents:
+
+- `precision@5`: fraction of the five retrieved documents that match the expected ids.
+- `recall@5`: fraction of expected ids that appear in the top five.
+
+Optional LLM-as-judge:
+
+```bash
+.venv/bin/python -m evals.portfolio_rag_eval
+```
+
+The judge only calls OpenAI when `OPENAI_API_KEY` is set. If the key is missing, the judge is reported as skipped; deterministic precision/recall still run.
+
+Optional reranking can be enabled locally:
+
+```bash
+pip install -r requirements-rerank.txt
+RAG_ENABLE_RERANKING=true python telegram_bot.py
+```
+
+Latest local result:
+
+- Command: `.venv/bin/python -m evals.portfolio_rag_eval --skip-llm`
+- Dataset: `synthetic_portfolio_rag_v1`, 25 questions, 12 documents.
+- Baseline retrieval: `precision@5 = 0.192`, `recall@5 = 0.92`.
+- Improved retrieval: `precision@5 = 0.208`, `recall@5 = 1.0`.
+- Improvement: `+0.016 precision@5`, `+0.08 recall@5`.
+- LLM judge: skipped, reason `disabled by --skip-llm`.
+- Report: `evals/latest_local_result.json`.
 
 ## Roadmap
 
