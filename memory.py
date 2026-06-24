@@ -4,7 +4,11 @@ import os
 import time
 from dotenv import load_dotenv
 
+from logging_config import configure_logging, get_logger
+
 load_dotenv()
+configure_logging()
+logger = get_logger(__name__)
 
 CHROMA_PATH = os.getenv("CHROMA_PATH", "./chroma_db")
 MEMORY_COLLECTION = os.getenv("MEMORY_COLLECTION", "conversation_memory")
@@ -33,6 +37,7 @@ def add_to_memory(user_id: str, user_message: str, assistant_response: str):
         documents=[doc],
         metadatas=[{"user_id": user_id, "timestamp": time.time()}]
     )
+    logger.info("memory_turn_saved", user_id=user_id, doc_id=doc_id)
 
 def retrieve_memory(user_id: str, query: str, n_results=3):
     """Ищет релевантные прошлые диалоги для данного пользователя"""
@@ -42,5 +47,8 @@ def retrieve_memory(user_id: str, query: str, n_results=3):
         where={"user_id": user_id}  # только этого пользователя
     )
     if results['documents'] and results['documents'][0]:
-        return "\n\n---\n\n".join(results['documents'][0])
+        documents = results['documents'][0]
+        logger.info("memory_retrieved", user_id=user_id, count=len(documents))
+        return "\n\n---\n\n".join(documents)
+    logger.info("memory_retrieved", user_id=user_id, count=0)
     return ""

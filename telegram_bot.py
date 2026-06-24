@@ -12,12 +12,15 @@ from telegram.ext import (
 from telegram.warnings import PTBUserWarning
 from orchestrator import orchestrate
 from scribe import ScribeAgent
+from logging_config import configure_logging, get_logger
 
 # Отключаем предупреждения библиотеки
 warnings.filterwarnings("ignore", category=PTBUserWarning)
 logging.getLogger("telegram.ext.ConversationHandler").setLevel(logging.ERROR)
 
 load_dotenv()
+configure_logging()
+logger = get_logger(__name__)
 
 TELEGRAM_TOKEN = os.getenv("TELEGRAMBOT_API_KEY")
 
@@ -149,8 +152,8 @@ async def info_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 # ---------- Обработка inline-кнопок ----------
 async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    print(f"[DEBUG] button_callback called with data: {update.callback_query.data}")
     query = update.callback_query
+    logger.info("telegram_button_callback", callback_data=query.data)
     await query.answer()
 
     if query.data == "chat":
@@ -227,6 +230,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         from scribe import ScribeAgent
         scribe = ScribeAgent()
         result = await asyncio.to_thread(scribe.create_case, case_data)
+        logger.info("telegram_case_save_finished", user_id=user_id, title=case_data.get("title"))
         await update.message.reply_text(result)
 
         # Сбрасываем флаг
@@ -300,6 +304,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             file = await context.bot.get_file(voice.file_id)
             ogg_path = f"/tmp/voice_{user_id}.ogg"
             await file.download_to_drive(ogg_path)
+            logger.info("telegram_voice_downloaded", user_id=user_id, file_id=voice.file_id)
 
             # Транскрипция через Whisper
             from openai import OpenAI
@@ -311,6 +316,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 )
             user_text = transcript.text
             os.remove(ogg_path)
+            logger.info("telegram_voice_transcribed", user_id=user_id, text_length=len(user_text or ""))
 
             # Отправляем текст в оркестратор в зависимости от режима
             await update.message.chat.send_action(action="typing")
@@ -323,6 +329,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
             await reply_text_chunked(update.message, response, parse_mode="Markdown")
         except Exception as e:
+            logger.exception("telegram_voice_failed", user_id=user_id, error=str(e))
             await update.message.reply_text(f"❌ Ошибка при обработке голосового: {e}")
         return
 
@@ -353,6 +360,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             answer = response.choices[0].message.content
             await update.message.reply_text(answer, parse_mode="Markdown")
         except Exception as e:
+            logger.exception("telegram_photo_failed", user_id=user_id, error=str(e))
             await update.message.reply_text(f"❌ Ошибка при анализе фото: {e}")
         return
 
@@ -378,6 +386,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         await reply_text_chunked(update.message, response, parse_mode="Markdown")
     except Exception as e:
+        logger.exception("telegram_message_failed", user_id=user_id, mode=mode, error=str(e))
         await update.message.reply_text(f"❌ Ошибка: {e}")
 
 async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -391,6 +400,9 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # ---------- Запуск ----------
 def main():
     from telegram.request import HTTPXRequest
+    if not TELEGRAM_TOKEN:
+        raise RuntimeError("TELEGRAMBOT_API_KEY is required")
+
     request = HTTPXRequest(
         connect_timeout=120.0,
         read_timeout=120.0,
@@ -411,7 +423,7 @@ def main():
     application.add_handler(MessageHandler(filters.PHOTO, handle_message))
     application.add_handler(MessageHandler(filters.VOICE, handle_message))
 
-    print("🚀 Бот запущен. Доступны команды: /start, /menu, /info")
+    logger.info("telegram_bot_started", commands=["/start", "/menu", "/info"])
     application.run_polling()
 
 if __name__ == "__main__":

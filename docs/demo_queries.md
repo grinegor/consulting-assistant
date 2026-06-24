@@ -10,6 +10,8 @@ Use these prompts in Telegram business consultation mode to demonstrate the assi
 6. "Which AI use cases are realistic for a marketing agency with a limited budget?"
 7. "Give me examples of successful AI implementation in customer support and critique the risks."
 
+The offline eval dataset in `evals/portfolio_rag_eval.py` expands this theme into 25 synthetic portfolio-safe retrieval questions. Those eval questions are not customer data and are safe to publish.
+
 Expected consultation flow:
 
 1. The Researcher searches the RAG knowledge base.

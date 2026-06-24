@@ -31,6 +31,6 @@ jobs:
       - name: Compile Python files
         run: >
           python -m compileall -q
-          telegram_bot.py scribe.py agents.py digest.py main.py memory.py
+          telegram_bot.py scribe.py agents.py digest.py main.py logging_config.py memory.py
           notion_to_chromadb.py orchestrator.py rag_tool.py
-          sync_notion_to_chromadb.py tests
+          sync_notion_to_chromadb.py evals tests

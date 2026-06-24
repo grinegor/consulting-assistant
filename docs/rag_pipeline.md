@@ -30,8 +30,9 @@ The script:
 1. queries the configured Notion database;
 2. maps Notion properties into normalized case dictionaries;
 3. builds document text, metadata, and ids;
-4. recreates the `business_cases` ChromaDB collection;
-5. stores documents with OpenAI embeddings.
+4. chunks long records into 700-word windows with 120-word overlap;
+5. recreates the `business_cases` ChromaDB collection;
+6. stores chunks with OpenAI embeddings.
 
 ## Incremental Sync
 
@@ -46,12 +47,47 @@ The script:
 1. loads `sync_state.json`;
 2. fetches all Notion pages;
 3. selects pages edited after the last sync timestamp;
-4. upserts updated documents into ChromaDB;
-5. writes the new sync timestamp.
+4. chunks long records into 700-word windows with 120-word overlap;
+5. upserts updated chunks into ChromaDB;
+6. writes the new sync timestamp.
 
 ## Retrieval
 
-`rag_tool.py` loads the `business_cases` collection and queries it with the user's business question. Results are formatted with title, category, truncated content, and an approximate relevance score before being passed back to the Researcher agent.
+`rag_tool.py` loads the `business_cases` collection and retrieves candidates with a hybrid strategy:
+
+1. Semantic retrieval from ChromaDB over OpenAI embeddings.
+2. BM25 lexical retrieval over the locally stored Chroma documents.
+3. Reciprocal Rank Fusion (RRF) to merge semantic and lexical rankings.
+4. Optional cross-encoder reranking with `cross-encoder/ms-marco-MiniLM-L-6-v2`.
+
+Reranking is disabled by default because it can download a heavy model and slow the bot. To enable it locally:
+
+```bash
+pip install -r requirements-rerank.txt
+RAG_ENABLE_RERANKING=true python telegram_bot.py
+```
+
+Results are formatted with title, category, truncated content, rank traces, and an approximate relevance score before being passed back to the Researcher agent.
+
+## Offline Evaluation
+
+The repository includes a deterministic synthetic RAG eval that does not call ChromaDB, Notion, OpenAI embeddings, or live services:
+
+```bash
+.venv/bin/python -m evals.portfolio_rag_eval --skip-llm
+```
+
+The eval uses 25 portfolio-safe questions and 12 synthetic business-case documents. It compares a title/category-only baseline with an improved full-text retrieval pass and reports `precision@5`, `recall@5`, and metric deltas. This is not a replacement for live ChromaDB retrieval validation, but it provides a quick regression check for dataset shape, metric computation, and retrieval expectations.
+
+To enable optional LLM-as-judge, run the same module without `--skip-llm` and set `OPENAI_API_KEY`. If the key is missing or the judge is unavailable, the eval marks the judge as skipped while keeping deterministic metrics.
+
+Latest local deterministic result:
+
+- baseline: `precision@5 = 0.192`, `recall@5 = 0.92`
+- improved: `precision@5 = 0.208`, `recall@5 = 1.0`
+- delta: `+0.016 precision@5`, `+0.08 recall@5`
+- LLM judge skipped with `--skip-llm`
+- full report in `evals/latest_local_result.json`
 
 ## Local Persistence
 
@@ -73,4 +109,11 @@ Optional:
 CHROMA_PATH=./chroma_db
 BUSINESS_CASES_COLLECTION=business_cases
 SYNC_STATE_FILE=sync_state.json
+RAG_CHUNK_WORDS=700
+RAG_CHUNK_OVERLAP=120
+RAG_SEMANTIC_CANDIDATES=20
+RAG_BM25_CANDIDATES=20
+RAG_RRF_K=60
+RAG_ENABLE_RERANKING=false
+RAG_RERANKER_MODEL=cross-encoder/ms-marco-MiniLM-L-6-v2
 ```

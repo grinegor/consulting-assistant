@@ -6,7 +6,11 @@ from rag_tool import ChromaRAGTool
 from memory import add_to_memory, retrieve_memory
 from dotenv import load_dotenv
 
+from logging_config import configure_logging, get_logger
+
 load_dotenv()
+configure_logging()
+logger = get_logger(__name__)
 
 # Создаём клиент с таймаутом 120 секунд
 timeout_config = httpx.Timeout(120.0, connect=60.0)
@@ -95,6 +99,7 @@ critic = Agent(
 )
 
 def run_business_crew(query: str) -> str:
+    logger.info("business_crew_started", query_length=len(query))
     task_research = Task(
         description=f"""
         Клиент спрашивает: {query}
@@ -152,9 +157,11 @@ def run_business_crew(query: str) -> str:
     )
     crew = Crew(agents=[researcher, analyst, critic], tasks=[task_research, task_analysis, task_critique], verbose=True)
     result = crew.kickoff()
+    logger.info("business_crew_finished", query_length=len(query))
     return str(result)
 
 def direct_chat(user_message: str, history_context: str) -> str:
+    logger.info("direct_chat_started", has_history=bool(history_context))
     system_prompt = f"""
 Ты — дружелюбный AI-помощник. У тебя есть возможность подключать трёх субагентов:  
 - **Исследователь** (ищет инструменты и кейсы)  
@@ -175,29 +182,52 @@ def direct_chat(user_message: str, history_context: str) -> str:
         messages=[{"role": "user", "content": system_prompt}],
         max_completion_tokens=1000
     )
-    return response.choices[0].message.content
+    answer = response.choices[0].message.content
+    logger.info("direct_chat_finished", response_length=len(answer or ""))
+    return answer
 
 def should_use_business_crew(message: str) -> bool:
     keywords = ["ии", "ai", "чат-бот", "нейросеть", "автоматизация", "бизнес-процесс", "внедрение", "кейс", "оптимизация", "рентабельность", "риски"]
     return any(kw in message.lower() for kw in keywords)
 
-def orchestrate(user_id: str, user_message: str, mode: str = "auto") -> str:
+def orchestrate(
+    user_id: str,
+    user_message: str,
+    mode: str = "auto",
+    memory_retriever=None,
+    memory_writer=None,
+    chat_runner=None,
+    crew_runner=None,
+    router=None,
+) -> str:
     """
     mode: 'chat' - только простой чат
           'consult' - только бизнес-консультация (субагенты)
           'auto' - автоматический выбор по ключевым словам
     """
-    memory_context = retrieve_memory(user_id, user_message, n_results=3)
+    memory_retriever = memory_retriever or retrieve_memory
+    memory_writer = memory_writer or add_to_memory
+    chat_runner = chat_runner or direct_chat
+    crew_runner = crew_runner or run_business_crew
+    router = router or should_use_business_crew
+
+    logger.info("orchestration_started", user_id=user_id, mode=mode, message_length=len(user_message))
+    memory_context = memory_retriever(user_id, user_message, n_results=3)
 
     if mode == "chat":
-        response = direct_chat(user_message, memory_context)
+        selected_path = "chat"
+        response = chat_runner(user_message, memory_context)
     elif mode == "consult":
-        response = run_business_crew(user_message)
+        selected_path = "consult"
+        response = crew_runner(user_message)
     else:  # auto
-        if should_use_business_crew(user_message):
-            response = run_business_crew(user_message)
+        if router(user_message):
+            selected_path = "consult"
+            response = crew_runner(user_message)
         else:
-            response = direct_chat(user_message, memory_context)
+            selected_path = "chat"
+            response = chat_runner(user_message, memory_context)
 
-    add_to_memory(user_id, user_message, response)
+    memory_writer(user_id, user_message, response)
+    logger.info("orchestration_finished", user_id=user_id, mode=mode, selected_path=selected_path)
     return response

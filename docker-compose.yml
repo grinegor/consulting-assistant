@@ -1,6 +1,7 @@
 services:
   bot:
     build: .
+    command: ["python", "telegram_bot.py"]
     environment:
       OPENAI_API_KEY: ${OPENAI_API_KEY:?OPENAI_API_KEY is required}
       TELEGRAMBOT_API_KEY: ${TELEGRAMBOT_API_KEY:?TELEGRAMBOT_API_KEY is required}
@@ -11,6 +12,20 @@ services:
       BUSINESS_CASES_COLLECTION: ${BUSINESS_CASES_COLLECTION:-business_cases}
       MEMORY_COLLECTION: ${MEMORY_COLLECTION:-conversation_memory}
       SYNC_STATE_FILE: ${SYNC_STATE_FILE:-sync_state.json}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      RAG_CHUNK_WORDS: ${RAG_CHUNK_WORDS:-700}
+      RAG_CHUNK_OVERLAP: ${RAG_CHUNK_OVERLAP:-120}
+      RAG_SEMANTIC_CANDIDATES: ${RAG_SEMANTIC_CANDIDATES:-20}
+      RAG_BM25_CANDIDATES: ${RAG_BM25_CANDIDATES:-20}
+      RAG_RRF_K: ${RAG_RRF_K:-60}
+      RAG_ENABLE_RERANKING: ${RAG_ENABLE_RERANKING:-false}
+      RAG_RERANKER_MODEL: ${RAG_RERANKER_MODEL:-cross-encoder/ms-marco-MiniLM-L-6-v2}
     volumes:
       - ./chroma_db:/app/chroma_db
+    healthcheck:
+      test: ["CMD", "python", "-c", "from pathlib import Path; cmd=Path('/proc/1/cmdline').read_bytes().replace(b'\\x00', b' '); raise SystemExit(0 if b'telegram_bot.py' in cmd else 1)"]
+      interval: 30s
+      timeout: 5s
+      start_period: 20s
+      retries: 3
     restart: unless-stopped

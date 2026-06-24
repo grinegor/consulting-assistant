@@ -7,7 +7,12 @@ from datetime import datetime
 from chromadb.utils import embedding_functions
 from dotenv import load_dotenv
 
+from logging_config import configure_logging, get_logger
+from rag_tool import chunk_records
+
 load_dotenv()
+configure_logging()
+logger = get_logger(__name__)
 
 STATE_FILE = os.getenv("SYNC_STATE_FILE", "sync_state.json")
 CHROMA_PATH = os.getenv("CHROMA_PATH", "./chroma_db")
@@ -115,13 +120,21 @@ Use Case: {safe_get_text(props.get("Use Case"))}
     }
     return page["id"], doc_text, metadata
 
+
+def chunk_page_payload(page_id, doc_text, metadata):
+    documents, metadatas, ids = chunk_records([doc_text], [metadata], [page_id])
+    if len(documents) == 1:
+        return [documents[0]], [metadata], [page_id]
+    return documents, metadatas, ids
+
+
 def sync():
-    print("🔄 Синхронизация Notion -> ChromaDB...")
+    logger.info("notion_sync_started")
     state = load_state()
     last_sync = state["last_sync"]
 
     all_pages = get_all_notion_pages()
-    print(f"📄 Всего страниц в Notion: {len(all_pages)}")
+    logger.info("notion_pages_loaded", count=len(all_pages))
 
     updated_pages = []
     if last_sync == 0:
@@ -134,10 +147,10 @@ def sync():
                 if edited_ts > last_sync:
                     updated_pages.append(page)
 
-    print(f"📝 Обновлённых страниц: {len(updated_pages)}")
+    logger.info("notion_pages_to_update", count=len(updated_pages))
 
     if not updated_pages:
-        print("✅ Нет изменений.")
+        logger.info("notion_sync_no_changes")
         return
 
     chroma_client = chromadb.PersistentClient(path=CHROMA_PATH)
@@ -155,17 +168,22 @@ def sync():
         if not payload:
             continue
         page_id, doc_text, metadata = payload
-
+        documents, metadatas, ids = chunk_page_payload(page_id, doc_text, metadata)
         collection.upsert(
-            ids=[page_id],
-            documents=[doc_text],
-            metadatas=[metadata]
+            ids=ids,
+            documents=documents,
+            metadatas=metadatas
         )
-        print(f"  ✅ Обновлён: {metadata['title']}")
+        logger.info(
+            "chroma_page_upserted",
+            notion_id=page_id,
+            chunk_count=len(documents),
+            collection=COLLECTION_NAME,
+        )
 
     state["last_sync"] = int(time.time())
     save_state(state)
-    print("✅ Синхронизация завершена.")
+    logger.info("notion_sync_finished")
 
 if __name__ == "__main__":
     sync()

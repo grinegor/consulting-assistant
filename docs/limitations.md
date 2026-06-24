@@ -7,7 +7,7 @@ This repository is an MVP portfolio project, not a production consulting platfor
 - The bot uses Telegram long polling, not a horizontally scalable webhook deployment.
 - Local ChromaDB is used by default. Production usage would need backups, monitoring, and a migration plan for larger datasets.
 - There is no enterprise auth, RBAC, tenant isolation, or audit trail.
-- There is no production observability layer for agent traces, retrieval quality, latency, or API costs.
+- Structured application logs are present, but there is no production tracing backend, metrics dashboard, alerting, or API cost monitoring yet.
 
 ## Data And Privacy
 
@@ -30,4 +30,8 @@ This repository is an MVP portfolio project, not a production consulting platfor
 ## Testing Scope
 
 - Tests use mocks/fakes and do not call real Telegram, OpenAI, Notion, CrewAI, or ChromaDB services.
+- The offline RAG eval uses synthetic documents and lexical scoring. It verifies metric computation and portfolio-safe retrieval expectations, not live embedding quality.
+- The latest eval improvement is measured on a synthetic offline dataset; live Notion/Chroma retrieval should be evaluated separately before making production-quality claims.
+- `precision@5` is intentionally strict: questions with one expected document can score at most `0.2` precision when recall is perfect because the denominator is always five retrieved documents.
+- The LLM-as-judge eval is optional and skipped unless `OPENAI_API_KEY` is available; local deterministic results should state whether the judge ran or skipped.
 - Integration tests with real sandbox accounts would be the next step before production deployment.

@@ -7,7 +7,12 @@ from chromadb.utils import embedding_functions
 from dotenv import load_dotenv
 from openai import OpenAI
 
+from logging_config import configure_logging, get_logger
+from rag_tool import chunk_records
+
 load_dotenv()
+configure_logging()
+logger = get_logger(__name__)
 
 PROXY_URL = os.getenv("PROXY_URL")
 CHROMA_PATH = os.getenv("CHROMA_PATH", "./chroma_db")
@@ -109,11 +114,11 @@ def fetch_notion_cases():
         next_cursor = data.get("next_cursor")
 
     if not all_results:
-        print("⚠️ В базе данных нет страниц (кейсов).")
+        logger.warning("notion_cases_empty")
         return []
 
     sample_props = all_results[0].get("properties", {})
-    print("🔍 Доступные поля в Notion:", list(sample_props.keys()))
+    logger.info("notion_fields_discovered", fields=list(sample_props.keys()))
 
     field_mapping = {}
     for eng, rus in [("Name", "Название"), ("Category", "Категория"),
@@ -133,7 +138,7 @@ def fetch_notion_cases():
                     break
             field_mapping[eng] = found
 
-    print("📋 Соответствие полей:", field_mapping)
+    logger.info("notion_field_mapping_built", field_mapping=field_mapping)
 
     cases = []
     for page in all_results:
@@ -192,7 +197,7 @@ def rebuild_chroma_from_notion():
     chroma_client = chromadb.PersistentClient(path=CHROMA_PATH)
     try:
         chroma_client.delete_collection(COLLECTION_NAME)
-        print("🗑️ Старая коллекция удалена")
+        logger.info("chroma_collection_deleted", collection=COLLECTION_NAME)
     except Exception:
         pass
 
@@ -200,24 +205,24 @@ def rebuild_chroma_from_notion():
         name=COLLECTION_NAME,
         embedding_function=embed_fn
     )
-    print("✅ Коллекция создана с эмбеддингами text-embedding-3-small (через прокси)")
+    logger.info("chroma_collection_created", collection=COLLECTION_NAME)
 
     cases = fetch_notion_cases()
-    print(f"📥 Найдено {len(cases)} кейсов в Notion")
+    logger.info("notion_cases_fetched", count=len(cases))
 
     if not cases:
-        print("⚠️ Нет кейсов для загрузки. Убедитесь, что в базе есть страницы с заполненным полем 'Name' или 'Название'.")
+        logger.warning("notion_cases_missing_titles")
         return 0
 
     documents, metadatas, ids = build_chroma_payload(cases)
+    documents, metadatas, ids = chunk_records(documents, metadatas, ids)
     collection.add(
         documents=documents,
         metadatas=metadatas,
         ids=ids
     )
 
-    print(f"✅ Загружено {len(documents)} документов в ChromaDB")
-    print("\n🎉 Готово! Теперь RAG может искать по этим кейсам.")
+    logger.info("chroma_documents_loaded", count=len(documents), collection=COLLECTION_NAME)
     return len(documents)
 
 

@@ -6,3 +6,5 @@ feedparser
 openai
 httpx
 python-dotenv
+rank_bm25
+structlog

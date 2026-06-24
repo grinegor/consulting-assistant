@@ -3,7 +3,11 @@ from notion_client import Client
 import os
 from dotenv import load_dotenv
 
+from logging_config import configure_logging, get_logger
+
 load_dotenv()
+configure_logging()
+logger = get_logger(__name__)
 
 def build_notion_case_properties(case_data: dict) -> dict:
     tools_list = [t.strip() for t in case_data.get("tools", "").split(",") if t.strip()]
@@ -43,8 +47,10 @@ class NotionCreateCaseTool(BaseTool):
                 parent={"database_id": self._database_id},
                 properties=build_notion_case_properties(kwargs)
             )
+            logger.info("notion_case_created", title=kwargs.get("title"))
             return f"✅ Кейс «{kwargs.get('title')}» успешно создан в Notion. Ссылка: {page['url']}"
         except Exception as e:
+            logger.exception("notion_case_create_failed", title=kwargs.get("title"))
             return f"❌ Ошибка при создании кейса: {e}"
 
 
